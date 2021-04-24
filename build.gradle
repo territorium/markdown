@@ -1,0 +1,71 @@
+plugins {
+  id 'com.gradle.plugin-publish' version '0.14.0'
+  id 'java-gradle-plugin'
+  id 'maven-publish'
+}
+
+//apply plugin: 'java'
+//apply plugin: 'java-gradle-plugin'
+//apply plugin: 'maven-publish'
+
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+
+version	= '0.1.0'
+group	= 'it.smartio.build' // Required for maven only
+
+
+
+dependencies {
+  implementation gradleApi()
+
+  // https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop
+  implementation group: 'org.apache.xmlgraphics', name: 'fop', version: '2.6'
+  // https://mvnrepository.com/artifact/org.commonmark/commonmark
+  implementation group: 'org.commonmark', name: 'commonmark', version: '0.17.1'
+}
+
+
+sourceSets {
+  main {
+    java {
+      exclude '**/*Mojo.java'
+    }
+  }
+}
+
+
+gradlePlugin {
+  plugins {
+    markdown {
+      id = 'it.smartio.gradle.markdown'
+      displayName = 'Markdown documenter'
+      description = 'The plugin allos to convert markdown in a PDF manual' 
+      implementationClass = 'it.smartio.build.gradle.MarkdownGradle'
+    }
+  }
+}
+
+
+// The configuration example below shows the minimum required properties
+// configured to publish your plugin to the plugin portal
+pluginBundle {
+  website = 'https://www.tol.it'
+  vcsUrl = 'https://github.com/territorium/markdown.git'
+
+  plugins {
+    markdown {
+      displayName = 'Markdown documenter'
+      description = 'The plugin allows to convert markdown in a PDF manual'
+      tags = ['markdown', 'pdf', 'documentation']
+      version = '0.1.0'
+    }
+  }
+}
+
+// as alternative use META-INF/gradle-plugins/it.smartio.gradle.markdown.properties
+// implementation-class=it.smartio.build.gradle.MarkdownGradle
