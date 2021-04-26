@@ -4,10 +4,6 @@ plugins {
   id 'maven-publish'
 }
 
-//apply plugin: 'java'
-//apply plugin: 'java-gradle-plugin'
-//apply plugin: 'maven-publish'
-
 
 repositories {
   mavenLocal()
@@ -15,8 +11,8 @@ repositories {
 }
 
 
-version	= '0.1.0'
-group	= 'it.smartio.build' // Required for maven only
+version	= '0.1.3'
+group	= 'into.tol'
 
 
 
@@ -43,29 +39,23 @@ gradlePlugin {
   plugins {
     markdown {
       id = 'it.smartio.gradle.markdown'
-      displayName = 'Markdown documenter'
-      description = 'The plugin allos to convert markdown in a PDF manual' 
       implementationClass = 'it.smartio.build.gradle.MarkdownGradle'
     }
   }
 }
 
 
-// The configuration example below shows the minimum required properties
-// configured to publish your plugin to the plugin portal
+// Configured to publish your plugin to the plugin portal
 pluginBundle {
   website = 'https://www.tol.it'
-  vcsUrl = 'https://github.com/territorium/markdown.git'
+  vcsUrl = 'https://github.com/tol-smartio/markdown.git'
 
   plugins {
     markdown {
       displayName = 'Markdown documenter'
       description = 'The plugin allows to convert markdown in a PDF manual'
       tags = ['markdown', 'pdf', 'documentation']
-      version = '0.1.0'
+      version = '0.1.3'
     }
   }
 }
-
-// as alternative use META-INF/gradle-plugins/it.smartio.gradle.markdown.properties
-// implementation-class=it.smartio.build.gradle.MarkdownGradle

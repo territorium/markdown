@@ -1,5 +1,120 @@
 # Markdown for PDF generation
 
+The plugin supports the creation of beautiful PDF's from markdown documents.
+
+## Plugin usage
+
+Create a simple gradle project with the Gradle Wrapper and configure *build.gradle* and *settings.gradle*.
+
+The *build.gradle* applies the markdown plugin with the configuration parameters.
+
+~~~
+plugins {
+  id 'it.smartio.gradle.markdown' version '0.1.4'
+}
+
+
+markdown.config = 'template.ui.xml'
+markdown.source = 'manual'
+~~~
+
+The optional *markdown.config* parameter defines the configuration file. If the parameter is omitted an internal default template is used. The *markdown.source* parameter defines a directory of where the root markdown files are located, or it defines a single markdown file that should be converted to PDF.
+
+The *settings.gradle* optionally defines the plugin repository.
+
+~~~
+pluginManagement {
+  repositories {
+    mavenLocal()
+    gradlePluginPortal()
+  }
+}
+~~~
+
+The *markdown.config* parameter is optional. By default a standard template / configuration is applied. If defined it allows to define the layout of the single pages and the used fonts.
+
+~~~
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE template>
+<template width="210mm" height="297mm">
+	<font name="TEXT">
+		<font-metric file="fonts/RobotoCondensed-Regular.ttf" />
+		<font-metric file="fonts/RobotoCondensed-Bold.ttf" bold="true" />
+		<font-metric file="fonts/RobotoCondensed-Italic.ttf" italic="true" />
+		<font-metric file="fonts/RobotoCondensed-BoldItalic.ttf" bold="true" italic="true" />
+	</font>
+	<font name="MONO">
+		<font-metric file="fonts/UbuntuMono-Regular.ttf" />
+		<font-metric file="fonts/UbuntuMono-Bold.ttf" bold="true" />
+		<font-metric file="fonts/UbuntuMono-Italic.ttf" italic="true" />
+		<font-metric file="fonts/UbuntuMono-BoldItalic.ttf" bold="true" italic="true" />
+	</font>
+	<font name="SYMBOLS">
+		<font-metric file="fonts/MaterialIcons-Regular.ttf" />
+	</font>
+	
+	<page name="cover">
+		<region-body top="210mm" left="2.7in" right="0" bottom="70mm"/>
+		<region-north extent="297mm" precedence="true" align="before" background=":background.jpg">
+			<static top="187mm" left="2.5in" right="0" bottom="70mm" background="#469ba5">
+				<panel top="0" left="0.2in" right="0.2in" bottom="0">
+					<text color="white" font-size="48pt" font-weight="bold" line-height="1.4em">User Manual</text>
+				</panel>
+			</static>
+		</region-north>
+	</page>
+	<page name="title">
+		<region-body top="7.5in" left="1in" right="1in" bottom="1in" column-count="2" column-gap="12pt" />
+		<region-north extent="297mm" precedence="true" align="before" background="#469ba5">
+			<static top="1in" left="1in" right="1in" bottom="1in">
+				<text color="#4da8b3" font-size="256pt" font-weight="bold">{{$CHAPTER}}</text>
+			</static>
+			<static top="140mm" left="1in" right="1in" bottom="1in">
+				<text color="#eeeeee" font-size="42pt" font-weight="bold">{{$TITLE}}</text>
+			</static>
+		</region-north>
+	</page>
+	<page name="odd">
+		<region-body top="0.75in" left="0.75in" right="0.75in" bottom="0.75in" />
+		<region-north extent="8mm" precedence="false" border="0" padding="0" orientation="90">
+			<static top="0mm" left="130mm" right="10mm" bottom="0mm" background="#469ba5">
+				<text color="#ffffff" font-size="13pt" text-align="center" top="0.2em">{{$TITLE}}</text>
+			</static>
+		</region-north>
+		<region-south extent="10mm" precedence="true" align="after">
+			<static top="0mm" left="190mm" right="10mm" bottom="0mm" background="#469ba5">
+				<text color="#ffffff" text-align="center" top="0.5em">{{$PAGE_NUMBER}}</text>
+			</static>
+		</region-south>
+	</page>
+	<page name="even">
+		<region-body top="0.75in" left="0.75in" right="0.75in" bottom="0.75in" />
+		<region-north extent="8mm" precedence="false" border="0" padding="0" orientation="90">
+			<static top="0mm" left="10mm" right="130mm" bottom="0mm" background="#469ba5">
+				<text color="#ffffff" font-size="13pt" text-align="center" top="0.2em">{{$TITLE}}</text>
+			</static>
+		</region-north>
+		<region-south extent="10mm" precedence="true" align="after">
+			<static top="0mm" left="10mm" right="190mm" bottom="0mm" background="#469ba5">
+				<text color="#ffffff" text-align="center" top="0.5em">{{$PAGE_NUMBER}}</text>
+			</static>
+		</region-south>
+		<region-east extent="0" precedence="false" border="0" padding="0" orientation="90" />
+	</page>
+	<page name="blank">
+		<region-body />
+	</page>
+</template>
+~~~
+
+Currently the renderer support 3 different fonts:
+
+- TEXT: Defines the font for the default text.
+- MONO: Defines the font for the code snippets.
+- SYMBOLS: Defines the symbol font, used for font icons.
+
+
+## Supported syntaxes
 
 [Markdown][1] is a plain text format for writing structured documents, based on formatting conventions from email and usenet. *Markdown* is a simple way to format text that looks great on any device. It doesn’t do anything fancy like change the font size, color, or type — just the essentials, using keyboard symbols you already know.
 
