@@ -11,8 +11,8 @@ repositories {
 }
 
 
-version	= '0.1.3'
-group	= 'into.tol'
+version = '0.1.13'
+group	= 'it.smartio'
 
 
 
@@ -24,6 +24,10 @@ dependencies {
   // https://mvnrepository.com/artifact/org.commonmark/commonmark
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.17.1'
 }
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 
 sourceSets {
@@ -47,15 +51,15 @@ gradlePlugin {
 
 // Configured to publish your plugin to the plugin portal
 pluginBundle {
-  website = 'https://www.tol.it'
+  website = 'https://www.tol.info'
   vcsUrl = 'https://github.com/tol-smartio/markdown.git'
 
   plugins {
     markdown {
       displayName = 'Markdown documenter'
-      description = 'The plugin allows to convert markdown in a PDF manual'
+      description = 'Glade plugin converting markdown into PDF'
       tags = ['markdown', 'pdf', 'documentation']
-      version = '0.1.3'
+      version = '0.1.13'
     }
   }
 }

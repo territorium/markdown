@@ -20,10 +20,10 @@ package it.smartio.docs;
  */
 public interface Renderer {
 
-	/**
-	 * Renders the {@link Book}.
-	 *
-	 * @param book
-	 */
-	void render(Book book);
+  /**
+   * Renders the {@link Book}.
+   *
+   * @param book
+   */
+  void render(Book book);
 }

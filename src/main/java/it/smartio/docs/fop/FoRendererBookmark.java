@@ -17,7 +17,7 @@ package it.smartio.docs.fop;
 
 import it.smartio.docs.Chapter;
 import it.smartio.docs.NodeVisitor;
-import it.smartio.docs.fop.builder.FoBookmark;
+import it.smartio.docs.fop.nodes.FoBookmark;
 import it.smartio.docs.util.PageUtil;
 
 /**
@@ -25,16 +25,16 @@ import it.smartio.docs.util.PageUtil;
  */
 class FoRendererBookmark implements NodeVisitor<FoBookmark> {
 
-	/**
-	 * Renders a {@link Chapter} node.
-	 *
-	 * @param node
-	 * @param data
-	 */
-	@Override
-	public final void visit(Chapter node, FoBookmark data) {
-		FoBookmark bookmark = data.addBookmark(node.getId());
-		bookmark.setTitle(PageUtil.encode(node.getTitle().trim()));
-		node.forEach(n -> n.accept(this, bookmark));
-	}
+  /**
+   * Renders a {@link Chapter} node.
+   *
+   * @param node
+   * @param data
+   */
+  @Override
+  public final void visit(Chapter node, FoBookmark data) {
+    FoBookmark bookmark = data.addBookmark(node.getId());
+    bookmark.setTitle(PageUtil.encode(node.getTitle().trim()));
+    node.forEach(n -> n.accept(this, bookmark));
+  }
 }

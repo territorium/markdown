@@ -22,48 +22,50 @@ import org.commonmark.node.CustomNode;
  */
 public class TableCell extends CustomNode {
 
-	private boolean header;
-	private int width;
-	private Alignment alignment;
+  private boolean   header;
+  private int       width;
+  private Alignment alignment;
 
-	/**
-	 * @return whether the cell is a header or not
-	 */
-	public boolean isHeader() {
-		return this.header;
-	}
+  /**
+   * @return whether the cell is a header or not
+   */
+  public boolean isHeader() {
+    return this.header;
+  }
 
-	public void setHeader(boolean header) {
-		this.header = header;
-	}
+  public void setHeader(boolean header) {
+    this.header = header;
+  }
 
-	/**
-	 * @return the cell alignment
-	 */
-	public int getWidth() {
-		return this.width == 0 ? 1 : this.width;
-	}
+  /**
+   * @return the cell alignment
+   */
+  public int getWidth() {
+    return this.width == 0 ? 1 : this.width;
+  }
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
+  public void setWidth(int width) {
+    this.width = width;
+  }
 
-	/**
-	 * @return the cell alignment
-	 */
-	public Alignment getAlignment() {
-		return this.alignment == null ? Alignment.LEFT : this.alignment;
-	}
+  /**
+   * @return the cell alignment
+   */
+  public Alignment getAlignment() {
+    return this.alignment == null ? Alignment.LEFT : this.alignment;
+  }
 
-	public void setAlignment(Alignment alignment) {
-		this.alignment = alignment;
-	}
+  public void setAlignment(Alignment alignment) {
+    this.alignment = alignment;
+  }
 
-	/**
-	 * How the cell is aligned horizontally.
-	 */
-	public enum Alignment {
-		LEFT, CENTER, RIGHT
-	}
+  /**
+   * How the cell is aligned horizontally.
+   */
+  public enum Alignment {
+    LEFT,
+    CENTER,
+    RIGHT
+  }
 
 }

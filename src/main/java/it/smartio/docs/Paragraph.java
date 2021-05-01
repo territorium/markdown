@@ -20,24 +20,24 @@ package it.smartio.docs;
  */
 public interface Paragraph extends Node {
 
-	int getIntent();
+  int getIntent();
 
-	boolean isSoftBreak();
+  boolean isSoftBreak();
 
-	boolean isLineBreak();
+  boolean isLineBreak();
 
-	String getBackground();
+  String getBackground();
 
-	String getPaddingTop();
+  String getPaddingTop();
 
-	String getPaddingLeft();
+  String getPaddingLeft();
 
-	String getPaddingRight();
+  String getPaddingRight();
 
-	String getPaddingBottom();
+  String getPaddingBottom();
 
-	@Override
-	default <R> void accept(NodeVisitor<R> visitor, R data) {
-		visitor.visit(this, data);
-	}
+  @Override
+  default <R> void accept(NodeVisitor<R> visitor, R data) {
+    visitor.visit(this, data);
+  }
 }

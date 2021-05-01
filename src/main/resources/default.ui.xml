@@ -1,73 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE template>
 <template width="210mm" height="297mm">
-	<page name="cover">
-		<region-body top="210mm" left="2.7in" right="0" bottom="70mm"/>
-		<region-north extent="297mm" precedence="true" align="before" background=":background.jpg">
-			<static top="187mm" left="2.5in" right="0" bottom="70mm" background="#469ba5">
+	<page name="cover" padding="210mm,0,70mm,,2.7in">
+		<page-top extent="297mm" background=":background.jpg">
+			<panel top="187mm" left="2.5in" right="0" bottom="70mm" background="#469ba5">
 				<panel top="0" left="0.2in" right="0.2in" bottom="0">
 					<text color="white" font-size="48pt" font-weight="bold" line-height="1.4em">User Manual</text>
 				</panel>
-			</static>
-		</region-north>
+			</panel>
+		</page-top>
 	</page>
-	<page name="title">
-		<region-body top="7.5in" left="1in" right="1in" bottom="1in" column-count="2" column-gap="12pt" />
-		<region-north extent="297mm" precedence="true" align="before" background="#469ba5">
-			<static top="1in" left="1in" right="1in" bottom="1in">
+	<page name="title" padding="7.5in,1in,1in,1in" column-count="2" column-gap="12pt">
+		<page-top extent="297mm" background="#469ba5">
+			<panel top="1in" left="1in" right="1in" bottom="1in">
 				<text color="#4da8b3" font-size="256pt" font-weight="bold">{{$CHAPTER}}</text>
-			</static>
-			<static top="140mm" left="1in" right="1in" bottom="1in">
+			</panel>
+			<panel top="140mm" left="1in" right="1in" bottom="1in">
 				<text color="#eeeeee" font-size="42pt" font-weight="bold">{{$TITLE}}</text>
-			</static>
-		</region-north>
+			</panel>
+		</page-top>
 	</page>
-	<page name="odd">
-		<region-body top="0.75in" left="0.75in" right="0.75in" bottom="0.75in" />
-		<region-north extent="8mm" precedence="false" border="0" padding="0" orientation="90">
-			<static top="0mm" left="130mm" right="10mm" bottom="0mm" background="#469ba5">
+	<page name="odd" padding="0.75in">
+		<page-top extent="8mm">
+			<panel top="0mm" left="130mm" right="10mm" bottom="0mm" background="#469ba5">
 				<text color="#ffffff" font-size="13pt" text-align="center" top="0.2em">{{$TITLE}}</text>
-			</static>
-		</region-north>
-		<region-south extent="10mm" precedence="true" align="after">
-			<static top="0mm" left="190mm" right="10mm" bottom="0mm" background="#469ba5">
+			</panel>
+		</page-top>
+		<page-bottom extent="10mm">
+			<panel top="0mm" left="190mm" right="10mm" bottom="0mm" background="#469ba5">
 				<text color="#ffffff" text-align="center" top="0.5em">{{$PAGE_NUMBER}}</text>
-			</static>
-		</region-south>
+			</panel>
+		</page-bottom>
 	</page>
-	<page name="even">
-		<region-body top="0.75in" left="0.75in" right="0.75in" bottom="0.75in" />
-		<region-north extent="8mm" precedence="false" border="0" padding="0" orientation="90">
-			<static top="0mm" left="10mm" right="130mm" bottom="0mm" background="#469ba5">
+	<page name="even" padding="0.75in">
+		<page-top extent="8mm">
+			<panel top="0mm" left="10mm" right="130mm" bottom="0mm" background="#469ba5">
 				<text color="#ffffff" font-size="13pt" text-align="center" top="0.2em">{{$TITLE}}</text>
-			</static>
-		</region-north>
-		<region-south extent="10mm" precedence="true" align="after">
-			<static top="0mm" left="10mm" right="190mm" bottom="0mm" background="#469ba5">
+			</panel>
+		</page-top>
+		<page-bottom extent="10mm">
+			<panel top="0mm" left="10mm" right="190mm" bottom="0mm" background="#469ba5">
 				<text color="#ffffff" text-align="center" top="0.5em">{{$PAGE_NUMBER}}</text>
-			</static>
-		</region-south>
-		<region-east extent="0" precedence="false" border="0" padding="0" orientation="90" />
+			</panel>
+		</page-bottom>
 	</page>
-	<page name="blank">
-		<region-body />
-	</page>
-
-	<page-sequence name="book">
-		<page-reference name="cover" position="first" pagination="any" />
-		<page-reference name="odd" position="any" pagination="odd" />
-		<page-reference name="even" position="any" pagination="even" />
-		<page-reference name="blank" pagination="blank" />
-	</page-sequence>
-	<page-sequence name="chapter">
-		<page-reference name="title" position="first" pagination="any" />
-		<page-reference name="odd" position="any" pagination="odd" />
-		<page-reference name="even" position="any" pagination="even" />
-		<page-reference name="blank" pagination="blank" />
-	</page-sequence>
-	<page-sequence name="standard">
-		<page-reference name="odd" position="any" pagination="odd" />
-		<page-reference name="even" position="any" pagination="even" />
-		<page-reference name="blank" pagination="blank" />
-	</page-sequence>
+	<page name="blank" />
 </template>

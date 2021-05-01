@@ -20,20 +20,20 @@ package it.smartio.docs;
  */
 public interface CodeNode extends Node {
 
-	boolean isStyled();
+  boolean isStyled();
 
-	String getFontSize();
+  String getFontSize();
 
-	String getBackground();
+  String getBackground();
 
-	String getTextColor();
+  String getTextColor();
 
-	String getBorderColor();
+  String getBorderColor();
 
-	String getPadding();
+  String getPadding();
 
-	@Override
-	default <R> void accept(NodeVisitor<R> visitor, R data) {
-		visitor.visit(this, data);
-	}
+  @Override
+  default <R> void accept(NodeVisitor<R> visitor, R data) {
+    visitor.visit(this, data);
+  }
 }

@@ -22,7 +22,7 @@ import java.util.List;
  */
 public interface Book {
 
-	String getTitle();
+  String getTitle();
 
-	List<Node> nodes();
+  List<Node> nodes();
 }

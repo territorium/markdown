@@ -29,38 +29,40 @@ import it.smartio.docs.Inline;
 import it.smartio.docs.Link;
 import it.smartio.docs.List;
 import it.smartio.docs.Message;
+import it.smartio.docs.Message.Style;
 import it.smartio.docs.NodeVisitor;
 import it.smartio.docs.Paragraph;
 import it.smartio.docs.Renderer;
 import it.smartio.docs.Table;
-import it.smartio.docs.Text;
-import it.smartio.docs.Message.Style;
 import it.smartio.docs.Table.AreaType;
 import it.smartio.docs.Table.Column;
 import it.smartio.docs.Table.Row;
-import it.smartio.docs.fop.builder.FoBasicLink;
-import it.smartio.docs.fop.builder.FoBlock;
-import it.smartio.docs.fop.builder.FoBookmark;
-import it.smartio.docs.fop.builder.FoExternalGraphic;
-import it.smartio.docs.fop.builder.FoFlow;
-import it.smartio.docs.fop.builder.FoFootnote;
-import it.smartio.docs.fop.builder.FoListBlock;
-import it.smartio.docs.fop.builder.FoListItem;
-import it.smartio.docs.fop.builder.FoTable;
-import it.smartio.docs.fop.builder.FoTableArea;
-import it.smartio.docs.fop.builder.FoTableCell;
-import it.smartio.docs.fop.builder.FoTableRow;
+import it.smartio.docs.Text;
+import it.smartio.docs.fop.config.FoContext;
+import it.smartio.docs.fop.config.FontSymbols;
+import it.smartio.docs.fop.nodes.FoBasicLink;
+import it.smartio.docs.fop.nodes.FoBlock;
+import it.smartio.docs.fop.nodes.FoBookmark;
+import it.smartio.docs.fop.nodes.FoExternalGraphic;
+import it.smartio.docs.fop.nodes.FoFlow;
+import it.smartio.docs.fop.nodes.FoFootnote;
+import it.smartio.docs.fop.nodes.FoListBlock;
+import it.smartio.docs.fop.nodes.FoListItem;
+import it.smartio.docs.fop.nodes.FoTable;
+import it.smartio.docs.fop.nodes.FoTableArea;
+import it.smartio.docs.fop.nodes.FoTableCell;
+import it.smartio.docs.fop.nodes.FoTableRow;
 import it.smartio.docs.util.PageUtil;
 
 /**
  * The {@link FoRenderer} class.
  */
-class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
+class FoRenderer implements Renderer, NodeVisitor<FoContext> {
 
   private static final String BOOK_ID = "ROOT";
 
   private final PrintWriter   writer;
-  private final FoConfig      config;
+  private final FoContext     config;
 
   /**
    * Constructs an instance of {@link FoRenderer}.
@@ -68,7 +70,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
    * @param writer
    * @param layout
    */
-  public FoRenderer(PrintWriter writer, FoConfig config) {
+  public FoRenderer(PrintWriter writer, FoContext config) {
     this.writer = writer;
     this.config = config;
   }
@@ -90,25 +92,25 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
     String title = PageUtil.encode(node.getTitle().trim());
 
     // Renders the Bookmark
-    FoBookmark bookmark = config.getRoot().addBookmark(FoRenderer.BOOK_ID).setTitle(title);
+    FoBookmark bookmark = this.config.addBookmark(FoRenderer.BOOK_ID).setTitle(title);
     node.nodes().forEach(n -> n.accept(new FoRendererBookmark(), bookmark));
 
     // Renders the cover page
     Properties properties = new Properties();
     properties.put("TITLE", title);
 
-    FoFlow flow = config.createFlow(FoRenderer.BOOK_ID, FoConfig.PAGES_BOOK, false, properties);
+    FoFlow flow = this.config.createFlow(FoRenderer.BOOK_ID, Fo.PAGESET_BOOK, false, properties);
     flow.addBlock().setBreakAfter("page").setColor("white").setLineHeight("1.4em").setFontSize("26pt")
         .setFontWeight("bold").addContent(title);
 
-    config.push(flow.addBlock().setBreakBefore("page"));
-    node.nodes().forEach(c -> c.accept(this, config));
-    config.pop();
+    this.config.push(flow.addBlock().setBreakBefore("page"));
+    node.nodes().forEach(c -> c.accept(this, this.config));
+    this.config.pop();
 
-    Renderer renderer = new FoRendererToC(config, "Table of Contents");
+    Renderer renderer = new FoRendererToC(this.config, "Table of Contents");
     renderer.render(node); // Table of Content
 
-    getWriter().write(config.toString());
+    getWriter().write(this.config.toString());
   }
 
   /**
@@ -118,7 +120,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
    * @param data
    */
   @Override
-  public final void visit(Chapter node, FoConfig data) {
+  public final void visit(Chapter node, FoContext data) {
     switch (node.getLevel()) {
       case 1:
         String title = PageUtil.encode(node.getTitle());
@@ -126,7 +128,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
         properties.put("TITLE", title);
         properties.put("CHAPTER", PageUtil.getPageNumber(node));
 
-        FoFlow flow = data.createFlow(node.getId(), FoConfig.PAGES_CHAPTER, false, properties);
+        FoFlow flow = data.createFlow(node.getId(), Fo.PAGESET_CHAPTER, false, properties);
 
         flow.addBlock().setSpan("all").setMarginBottom("2em").setBorderBottom("1pt", "solid", "#a6d4d9");
         FoBlock index = flow.addBlock();
@@ -173,7 +175,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
    * @param data
    */
   @Override
-  public final void visit(Paragraph node, FoConfig data) {
+  public final void visit(Paragraph node, FoContext data) {
     FoBlock content = FoBlock.block().setLineHeight("1.4em");
 
     if (node.getIntent() > 0) { // Blockquote
@@ -205,7 +207,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
    * @param data
    */
   @Override
-  public final void visit(Text node, FoConfig data) {
+  public final void visit(Text node, FoContext data) {
     String text = PageUtil.encode(node.getText());
     if (node.isCode()) {
       FoBlock content = FoBlock.inline();
@@ -219,8 +221,8 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
       content.addText(text);
       data.top().addNode(content);
     } else {
-      data.top().addText(FoFont.forEachSymbol(text,
-          (t, f) -> FoBlock.inline().setFontFamily(f).setFontSize("14pt").addContent("" + t).build()));
+      data.top().addText(FontSymbols.forEach(text,
+          (s, f) -> FoBlock.inline().setFontFamily(f).setFontSize("14pt").addContent("" + s).build()));
     }
   }
 
@@ -231,7 +233,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
    * @param data
    */
   @Override
-  public final void visit(Image node, FoConfig data) {
+  public final void visit(Image node, FoContext data) {
     if (node.getAlign() != null) {
       data.top().set("text-align", node.getAlign());
     }
@@ -255,7 +257,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
    * @param data
    */
   @Override
-  public final void visit(Link node, FoConfig data) {
+  public final void visit(Link node, FoContext data) {
     FoBasicLink link = new FoBasicLink(node.getLink()).setColor("#4da8b3");
     data.top().addNode(link);
 
@@ -271,7 +273,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
    * @param data
    */
   @Override
-  public final void visit(List node, FoConfig data) {
+  public final void visit(List node, FoContext data) {
     FoListBlock list = new FoListBlock().setStartIndent("1pc");
     list.setDistanceBetweenStarts("1.0em").setLabelSeparation("0.2em");
     list.setSpace("0.8em", "1.0em", "1.2em");
@@ -294,7 +296,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
    * @param data
    */
   @Override
-  public final void visit(Table node, FoConfig data) {
+  public final void visit(Table node, FoContext data) {
     FoTable table = new FoTable().setTableLayout("fixed");
 
     if (!node.isVirtual()) {
@@ -383,7 +385,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
    * @param data
    */
   @Override
-  public final void visit(Message node, FoConfig data) {
+  public final void visit(Message node, FoContext data) {
     FoBlock content = FoBlock.block();
     content.setSpaceBefore("1.6em", "2em", "2.4em");
     content.setSpaceAfter("1.6em", "2em", "2.4em");
@@ -403,7 +405,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
   private int footnote = 0;
 
   @Override
-  public final void visit(Inline node, FoConfig data) {
+  public final void visit(Inline node, FoContext data) {
     FoBlock content = null;
 
     if (node.isFootnote()) {
@@ -456,7 +458,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoConfig> {
   }
 
   @Override
-  public final void visit(CodeNode node, FoConfig data) {
+  public final void visit(CodeNode node, FoContext data) {
     FoBlock content = FoBlock.block();
     content.setTextAlign("start");
     content.setFontFamily(Fo.FONT_CODE);

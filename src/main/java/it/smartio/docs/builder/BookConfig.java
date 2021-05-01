@@ -29,61 +29,60 @@ import java.util.stream.Collectors;
  */
 public class BookConfig {
 
-	private static final String KEYWORD_TOL = "/TOL/{{TOL;bold,#000000}}/";
-	private static final String KEYWORD_SMARTIO = "/smart\\.IO/{{smart.;bold}}{{IO;bold,#469ba5}}/";
+  private static final String KEYWORD_TOL     = "/TOL/{{TOL;bold,#000000}}/";
+  private static final String KEYWORD_SMARTIO = "/smart\\.IO/{{smart.;bold}}{{IO;bold,#469ba5}}/";
 
-	private static BookConfig INSTANCE;
+  private static BookConfig   INSTANCE;
 
-	public static BookConfig instance() {
-		if (BookConfig.INSTANCE == null) {
-			BookConfig.init(Arrays.asList(BookConfig.KEYWORD_TOL, BookConfig.KEYWORD_SMARTIO));
-		}
-		return BookConfig.INSTANCE;
-	}
+  public static BookConfig instance() {
+    if (BookConfig.INSTANCE == null) {
+      BookConfig.init(Arrays.asList(BookConfig.KEYWORD_TOL, BookConfig.KEYWORD_SMARTIO));
+    }
+    return BookConfig.INSTANCE;
+  }
 
-	private final List<BookKeyword> keywords;
-	private final Pattern pattern;
+  private final List<BookKeyword> keywords;
+  private final Pattern           pattern;
 
-	private BookConfig(List<BookKeyword> keywords) {
-		this.keywords = keywords;
-		this.pattern = keywords.isEmpty() ? null
-				: Pattern.compile(
-						keywords.stream().map(k -> "(" + k.getKeyword() + ")").collect(Collectors.joining("|")),
-						Pattern.CASE_INSENSITIVE);
-	}
+  private BookConfig(List<BookKeyword> keywords) {
+    this.keywords = keywords;
+    this.pattern = keywords.isEmpty() ? null
+        : Pattern.compile(keywords.stream().map(k -> "(" + k.getKeyword() + ")").collect(Collectors.joining("|")),
+            Pattern.CASE_INSENSITIVE);
+  }
 
-	/**
-	 * . Process the content string for the {@link ContentBuilder}.
-	 *
-	 * @param content
-	 * @param builder
-	 */
-	public final void processKeywords(String content, Consumer<String> consumer, Supplier<InlineBuilder> supplier) {
-		int offset = 0;
+  /**
+   * . Process the content string for the {@link ContentBuilder}.
+   *
+   * @param content
+   * @param builder
+   */
+  public final void processKeywords(String content, Consumer<String> consumer, Supplier<InlineBuilder> supplier) {
+    int offset = 0;
 
-		if (!this.keywords.isEmpty() && (this.pattern != null)) {
-			Matcher matcher = this.pattern.matcher(content);
-			while (matcher.find()) {
-				if (matcher.start() > offset) {
-					consumer.accept(content.substring(offset, matcher.start()));
-				}
+    if (!this.keywords.isEmpty() && (this.pattern != null)) {
+      Matcher matcher = this.pattern.matcher(content);
+      while (matcher.find()) {
+        if (matcher.start() > offset) {
+          consumer.accept(content.substring(offset, matcher.start()));
+        }
 
-				for (int i = 0; i < matcher.groupCount(); i++) {
-					String input = matcher.group(i + 1);
-					if (input != null) {
-						this.keywords.get(i).handle(input, supplier.get());
-					}
-				}
-				offset = matcher.end();
-			}
-		}
+        for (int i = 0; i < matcher.groupCount(); i++) {
+          String input = matcher.group(i + 1);
+          if (input != null) {
+            this.keywords.get(i).handle(input, supplier.get());
+          }
+        }
+        offset = matcher.end();
+      }
+    }
 
-		consumer.accept(content.substring(offset));
-	}
+    consumer.accept(content.substring(offset));
+  }
 
-	public static void init(List<String> mappings) {
-		List<BookKeyword> keywords = new ArrayList<>();
-		mappings.forEach(m -> keywords.add(BookKeyword.of(m)));
-		BookConfig.INSTANCE = new BookConfig(keywords);
-	}
+  public static void init(List<String> mappings) {
+    List<BookKeyword> keywords = new ArrayList<>();
+    mappings.forEach(m -> keywords.add(BookKeyword.of(m)));
+    BookConfig.INSTANCE = new BookConfig(keywords);
+  }
 }

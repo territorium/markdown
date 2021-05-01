@@ -46,274 +46,273 @@ import org.commonmark.node.ThematicBreak;
  */
 class MarkdownVisitor extends AbstractVisitor {
 
-	private final boolean isRequired;
+  private final boolean isRequired;
 
-	/**
-	 * Constructs an instance of {@link MarkdownVisitor}.
-	 */
-	protected MarkdownVisitor() {
-		this.isRequired = true;
-	}
+  /**
+   * Constructs an instance of {@link MarkdownVisitor}.
+   */
+  protected MarkdownVisitor() {
+    this.isRequired = true;
+  }
 
-	/**
-	 * Constructs an instance of {@link MarkdownVisitor}.
-	 */
-	protected MarkdownVisitor(boolean isRequired) {
-		this.isRequired = isRequired;
-	}
+  /**
+   * Constructs an instance of {@link MarkdownVisitor}.
+   */
+  protected MarkdownVisitor(boolean isRequired) {
+    this.isRequired = isRequired;
+  }
 
-	/**
-	 * Visit the named {@link Node}.
-	 *
-	 * @param node
-	 * @param name
-	 */
-	protected final void visit(Node node, String name) {
-		if (this.isRequired) {
-			throw new UnsupportedOperationException(name);
-		}
+  /**
+   * Visit the named {@link Node}.
+   *
+   * @param node
+   * @param name
+   */
+  protected final void visit(Node node, String name) {
+    if (this.isRequired) {
+      throw new UnsupportedOperationException(name);
+    }
 
-		System.out.println(name);
-		visitChildren(node);
-	}
+    visitChildren(node);
+  }
 
-	/**
-	 * Visit the {@link Document}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(Document node) {
-		visit(node, "Document");
-	}
+  /**
+   * Visit the {@link Document}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(Document node) {
+    visit(node, "Document");
+  }
 
-	/**
-	 * Visit the {@link Heading}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(Heading node) {
-		visit(node, "Heading");
-	}
+  /**
+   * Visit the {@link Heading}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(Heading node) {
+    visit(node, "Heading");
+  }
 
-	/**
-	 * Visit the {@link Paragraph}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(Paragraph node) {
-		visit(node, "Paragraph");
-	}
+  /**
+   * Visit the {@link Paragraph}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(Paragraph node) {
+    visit(node, "Paragraph");
+  }
 
-	/**
-	 * Visit the {@link SoftLineBreak}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(SoftLineBreak node) {
-		visit(node, "SoftLineBreak");
-	}
+  /**
+   * Visit the {@link SoftLineBreak}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(SoftLineBreak node) {
+    visit(node, "SoftLineBreak");
+  }
 
-	/**
-	 * Visit the {@link HardLineBreak}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(HardLineBreak node) {
-		visit(node, "HardLineBreak");
-	}
+  /**
+   * Visit the {@link HardLineBreak}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(HardLineBreak node) {
+    visit(node, "HardLineBreak");
+  }
 
-	/**
-	 * Visit the {@link ThematicBreak}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(ThematicBreak node) {
-		visit(node, "ThematicBreak");
-	}
+  /**
+   * Visit the {@link ThematicBreak}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(ThematicBreak node) {
+    visit(node, "ThematicBreak");
+  }
 
-	/**
-	 * Visit the {@link BlockQuote}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(BlockQuote node) {
-		visit(node, "BlockQuote");
-	}
+  /**
+   * Visit the {@link BlockQuote}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(BlockQuote node) {
+    visit(node, "BlockQuote");
+  }
 
-	/**
-	 * Visit the {@link Text}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(Text node) {
-		visit(node, "Text");
-	}
+  /**
+   * Visit the {@link Text}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(Text node) {
+    visit(node, "Text");
+  }
 
-	/**
-	 * Visit the {@link Emphasis}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(Emphasis node) {
-		visit(node, "Emphasis");
-	}
+  /**
+   * Visit the {@link Emphasis}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(Emphasis node) {
+    visit(node, "Emphasis");
+  }
 
-	/**
-	 * Visit the {@link StrongEmphasis}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(StrongEmphasis node) {
-		visit(node, "StrongEmphasis");
-	}
+  /**
+   * Visit the {@link StrongEmphasis}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(StrongEmphasis node) {
+    visit(node, "StrongEmphasis");
+  }
 
-	/**
-	 * Visit the {@link Link}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(Link node) {
-		visit(node, "Link");
-	}
+  /**
+   * Visit the {@link Link}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(Link node) {
+    visit(node, "Link");
+  }
 
-	/**
-	 * Visit the {@link LinkReferenceDefinition}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(LinkReferenceDefinition node) {
-		visit(node, "LinkReferenceDefinition");
-	}
+  /**
+   * Visit the {@link LinkReferenceDefinition}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(LinkReferenceDefinition node) {
+    visit(node, "LinkReferenceDefinition");
+  }
 
-	/**
-	 * Visit the {@link Image}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(Image node) {
-		visit(node, "Image");
-	}
+  /**
+   * Visit the {@link Image}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(Image node) {
+    visit(node, "Image");
+  }
 
-	/**
-	 * Visit the {@link BulletList}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(BulletList node) {
-		visit(node, "BulletList");
-	}
+  /**
+   * Visit the {@link BulletList}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(BulletList node) {
+    visit(node, "BulletList");
+  }
 
-	/**
-	 * Visit the {@link OrderedList}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(OrderedList node) {
-		visit(node, "OrderedList");
-	}
+  /**
+   * Visit the {@link OrderedList}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(OrderedList node) {
+    visit(node, "OrderedList");
+  }
 
-	/**
-	 * Visit the {@link ListItem}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(ListItem node) {
-		visit(node, "ListItem");
-	}
+  /**
+   * Visit the {@link ListItem}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(ListItem node) {
+    visit(node, "ListItem");
+  }
 
-	/**
-	 * Visit the {@link Code}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(Code node) {
-		visit(node, "Code");
-	}
+  /**
+   * Visit the {@link Code}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(Code node) {
+    visit(node, "Code");
+  }
 
-	/**
-	 * Visit the {@link IndentedCodeBlock}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(IndentedCodeBlock node) {
-		visit(node, "IndentedCodeBlock");
-	}
+  /**
+   * Visit the {@link IndentedCodeBlock}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(IndentedCodeBlock node) {
+    visit(node, "IndentedCodeBlock");
+  }
 
-	/**
-	 * Visit the {@link FencedCodeBlock}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(FencedCodeBlock node) {
-		visit(node, "FencedCodeBlock");
-	}
+  /**
+   * Visit the {@link FencedCodeBlock}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(FencedCodeBlock node) {
+    visit(node, "FencedCodeBlock");
+  }
 
-	/**
-	 * Visit the {@link HtmlBlock}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(HtmlBlock node) {
-		visit(node, "HtmlBlock");
-	}
+  /**
+   * Visit the {@link HtmlBlock}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(HtmlBlock node) {
+    visit(node, "HtmlBlock");
+  }
 
-	/**
-	 * Visit the {@link HtmlInline}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(HtmlInline node) {
-		visit(node, "HtmlInline");
-	}
+  /**
+   * Visit the {@link HtmlInline}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(HtmlInline node) {
+    visit(node, "HtmlInline");
+  }
 
-	/**
-	 * Visit the {@link CustomBlock}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(CustomBlock node) {
-		visit(node, "CustomBlock");
-	}
+  /**
+   * Visit the {@link CustomBlock}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(CustomBlock node) {
+    visit(node, "CustomBlock");
+  }
 
-	/**
-	 * Visit the {@link CustomNode}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(CustomNode node) {
-		visit(node, "CustomNode");
-	}
+  /**
+   * Visit the {@link CustomNode}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(CustomNode node) {
+    visit(node, "CustomNode");
+  }
 
-	/**
-	 * Visit the child nodes.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visitChildren(Node node) {
-		super.visitChildren(node);
-	}
+  /**
+   * Visit the child nodes.
+   *
+   * @param node
+   */
+  @Override
+  public final void visitChildren(Node node) {
+    super.visitChildren(node);
+  }
 }

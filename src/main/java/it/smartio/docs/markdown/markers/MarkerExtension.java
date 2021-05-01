@@ -22,29 +22,24 @@ import org.commonmark.renderer.html.HtmlRenderer;
 import it.smartio.docs.markdown.markers.Marker.Decoration;
 
 /**
- * Extension for GFM strikethrough using ~~ (GitHub Flavored Markdown).
- * <p>
- * Create it with {@link #create()} and then configure it on the builders
+ * Extension for GFM strikethrough using ~~ (GitHub Flavored Markdown). <p> Create it with
+ * {@link #create()} and then configure it on the builders
  * ({@link org.commonmark.parser.Parser.Builder#extensions(Iterable)},
- * {@link HtmlRenderer.Builder#extensions(Iterable)}).
- * </p>
- * <p>
- * The parsed strikethrough text regions are turned into {@link Marker} nodes.
- * </p>
+ * {@link HtmlRenderer.Builder#extensions(Iterable)}). </p> <p> The parsed strikethrough text
+ * regions are turned into {@link Marker} nodes. </p>
  */
 public class MarkerExtension implements Parser.ParserExtension {
 
-	private MarkerExtension() {
-	}
+  private MarkerExtension() {}
 
-	public static Extension create() {
-		return new MarkerExtension();
-	}
+  public static Extension create() {
+    return new MarkerExtension();
+  }
 
-	@Override
-	public void extend(Parser.Builder parserBuilder) {
-		parserBuilder.customDelimiterProcessor(new MarkerProcessor());
-		parserBuilder.customDelimiterProcessor(new MarkerProcessor(4, '_', Decoration.Underline)); // underline
-		parserBuilder.customDelimiterProcessor(new MarkerProcessor(2, '~', Decoration.Strikethrough)); // strikethrough
-	}
+  @Override
+  public void extend(Parser.Builder parserBuilder) {
+    parserBuilder.customDelimiterProcessor(new MarkerProcessor());
+    parserBuilder.customDelimiterProcessor(new MarkerProcessor(4, '_', Decoration.Underline)); // underline
+    parserBuilder.customDelimiterProcessor(new MarkerProcessor(2, '~', Decoration.Strikethrough)); // strikethrough
+  }
 }

@@ -38,22 +38,6 @@ import javax.xml.stream.events.XMLEvent;
 public abstract class StAX {
 
   /**
-   * Parses the attributes from {@link StartElement}.
-   *
-   * @param elem
-   */
-  private static Attributes parseAttributes(StartElement elem) {
-    Map<String, String> attributes = new HashMap<>();
-    Iterator<Attribute> iterator = elem.getAttributes();
-    while (iterator.hasNext()) {
-      QName name = iterator.next().getName();
-      String value = elem.getAttributeByName(name).getValue();
-      attributes.put(name.getLocalPart(), value);
-    }
-    return new Attributes(attributes);
-  }
-
-  /**
    * Create a {@link StAX} from the a resource.
    *
    * @param stream
@@ -98,6 +82,22 @@ public abstract class StAX {
   }
 
   /**
+   * Parses the attributes from {@link StartElement}.
+   *
+   * @param elem
+   */
+  private static Attributes parseAttributes(StartElement elem) {
+    Map<String, String> attributes = new HashMap<>();
+    Iterator<Attribute> iterator = elem.getAttributes();
+    while (iterator.hasNext()) {
+      QName name = iterator.next().getName();
+      String value = elem.getAttributeByName(name).getValue();
+      attributes.put(name.getLocalPart(), value);
+    }
+    return new Attributes(attributes);
+  }
+
+  /**
    * The {@link StAXHandler} class.
    */
   public interface Handler {
@@ -121,6 +121,14 @@ public abstract class StAX {
 
     public final String get(String name) {
       return this.attrs.get(name);
+    }
+
+    public final String get(String name, String value) {
+      return isSet(name) ? this.attrs.get(name) : value;
+    }
+
+    public final boolean getBool(String name) {
+      return Boolean.valueOf(get(name, "false"));
     }
 
     public final void onAttribute(String name, Consumer<String> consumer) {

@@ -25,28 +25,28 @@ import org.commonmark.node.Delimited;
  */
 public class ImageAttributes extends CustomNode implements Delimited {
 
-	private final Map<String, String> attributes;
+  private final Map<String, String> attributes;
 
-	public ImageAttributes(Map<String, String> attributes) {
-		this.attributes = attributes;
-	}
+  public ImageAttributes(Map<String, String> attributes) {
+    this.attributes = attributes;
+  }
 
-	@Override
-	public String getOpeningDelimiter() {
-		return "{";
-	}
+  @Override
+  public String getOpeningDelimiter() {
+    return "{";
+  }
 
-	@Override
-	public String getClosingDelimiter() {
-		return "}";
-	}
+  @Override
+  public String getClosingDelimiter() {
+    return "}";
+  }
 
-	public Map<String, String> getAttributes() {
-		return this.attributes;
-	}
+  public Map<String, String> getAttributes() {
+    return this.attributes;
+  }
 
-	@Override
-	protected String toStringAttributes() {
-		return "imageAttributes=" + this.attributes;
-	}
+  @Override
+  protected String toStringAttributes() {
+    return "imageAttributes=" + this.attributes;
+  }
 }

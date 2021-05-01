@@ -26,48 +26,48 @@ import it.smartio.docs.builder.SectionBuilder;
  */
 class CodeParserJson extends CodeParserDefault {
 
-	private static final String PATTERN_TEXT = "(\"[^\"]+\":)|(\"[^\"]+\")|([0-9.]+|true|false)";
-	private static final Pattern PATTERN = Pattern.compile(CodeParserJson.PATTERN_TEXT, Pattern.CASE_INSENSITIVE);
+  private static final String  PATTERN_TEXT = "(\"[^\"]+\":)|(\"[^\"]+\")|([0-9.]+|true|false)";
+  private static final Pattern PATTERN      = Pattern.compile(CodeParserJson.PATTERN_TEXT, Pattern.CASE_INSENSITIVE);
 
-	/**
-	 * Constructs an instance of {@link CodeParserIni}.
-	 *
-	 * @param builder
-	 */
-	public CodeParserJson(SectionBuilder builder) {
-		super(builder);
-	}
+  /**
+   * Constructs an instance of {@link CodeParserIni}.
+   *
+   * @param builder
+   */
+  public CodeParserJson(SectionBuilder builder) {
+    super(builder);
+  }
 
-	@Override
-	public void parse(String text) {
-		int offset = 0;
-		Matcher matcher = CodeParserJson.PATTERN.matcher(text);
-		while (matcher.find()) {
-			if (matcher.group(1) != null) {
-				if (matcher.start(1) > offset) {
-					addText(text.substring(offset, matcher.start(1)));
-				}
+  @Override
+  public void parse(String text) {
+    int offset = 0;
+    Matcher matcher = CodeParserJson.PATTERN.matcher(text);
+    while (matcher.find()) {
+      if (matcher.group(1) != null) {
+        if (matcher.start(1) > offset) {
+          addText(text.substring(offset, matcher.start(1)));
+        }
 
-				addInline(matcher.group(1)).setBold().setColor(CodeToken.JSON_NAME.COLOR);
-				offset = matcher.end(1);
-			} else if (matcher.group(2) != null) {
-				if (matcher.start(2) > offset) {
-					addText(text.substring(offset, matcher.start(2)));
-				}
+        addInline(matcher.group(1)).setBold().setColor(CodeToken.JSON_NAME.COLOR);
+        offset = matcher.end(1);
+      } else if (matcher.group(2) != null) {
+        if (matcher.start(2) > offset) {
+          addText(text.substring(offset, matcher.start(2)));
+        }
 
-				addInline(matcher.group(2)).setBold().setColor(CodeToken.JSON_TEXT.COLOR);
-				offset = matcher.end(2);
-			} else if (matcher.group(3) != null) {
-				if (matcher.start(3) > offset) {
-					addText(text.substring(offset, matcher.start(3)));
-				}
+        addInline(matcher.group(2)).setBold().setColor(CodeToken.JSON_TEXT.COLOR);
+        offset = matcher.end(2);
+      } else if (matcher.group(3) != null) {
+        if (matcher.start(3) > offset) {
+          addText(text.substring(offset, matcher.start(3)));
+        }
 
-				addInline(matcher.group(3)).setBold().setColor(CodeToken.JSON_VALUE.COLOR);
-				offset = matcher.end(3);
-			}
-		}
-		if (offset < text.length()) {
-			addText(text.substring(offset));
-		}
-	}
+        addInline(matcher.group(3)).setBold().setColor(CodeToken.JSON_VALUE.COLOR);
+        offset = matcher.end(3);
+      }
+    }
+    if (offset < text.length()) {
+      addText(text.substring(offset));
+    }
+  }
 }

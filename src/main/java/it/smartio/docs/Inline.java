@@ -20,34 +20,34 @@ package it.smartio.docs;
  */
 public interface Inline extends Node {
 
-	String getColor();
+  String getColor();
 
-	String getBackground();
+  String getBackground();
 
-	String getPaddingTop();
+  String getPaddingTop();
 
-	String getPaddingLeft();
+  String getPaddingLeft();
 
-	String getPaddingRight();
+  String getPaddingRight();
 
-	String getPaddingBottom();
+  String getPaddingBottom();
 
-	String getRadius();
+  String getRadius();
 
-	boolean isBold();
+  boolean isBold();
 
-	boolean isItalic();
+  boolean isItalic();
 
-	boolean isUnderline();
+  boolean isUnderline();
 
-	boolean isOverline();
+  boolean isOverline();
 
-	boolean isStrikethrough();
+  boolean isStrikethrough();
 
-	boolean isFootnote();
+  boolean isFootnote();
 
-	@Override
-	default <R> void accept(NodeVisitor<R> visitor, R data) {
-		visitor.visit(this, data);
-	}
+  @Override
+  default <R> void accept(NodeVisitor<R> visitor, R data) {
+    visitor.visit(this, data);
+  }
 }

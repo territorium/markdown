@@ -39,7 +39,7 @@ public abstract class DataUri {
 
   /**
    * Get the {@link InputStream}.
-   * 
+   *
    * @param uri
    */
   private static final InputStream getInputStream(String uri) throws FileNotFoundException {
@@ -87,7 +87,7 @@ public abstract class DataUri {
    */
   public static final String loadImage(String resource) {
     String contentType = resource.toLowerCase().endsWith(".png") ? "png" : "jpeg";
-    try (InputStream stream = getInputStream(resource)) {
+    try (InputStream stream = DataUri.getInputStream(resource)) {
       byte[] bytes = stream.readAllBytes();
       String base64 = Base64.getEncoder().encodeToString(bytes);
       return String.format("data:image/%s;base64,%s", contentType, base64);

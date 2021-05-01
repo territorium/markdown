@@ -22,19 +22,19 @@ import it.smartio.docs.Message;
  */
 public class MessageBuilder extends ContentBuilder implements Message {
 
-	private final Style style;
+  private final Style style;
 
-	/**
-	 * Constructs an instance of {@link MessageBuilder}.
-	 *
-	 * @param style
-	 */
-	public MessageBuilder(Style style) {
-		this.style = style;
-	}
+  /**
+   * Constructs an instance of {@link MessageBuilder}.
+   *
+   * @param style
+   */
+  public MessageBuilder(Style style) {
+    this.style = style;
+  }
 
-	@Override
-	public final Style getStyle() {
-		return this.style;
-	}
+  @Override
+  public final Style getStyle() {
+    return this.style;
+  }
 }

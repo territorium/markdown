@@ -24,42 +24,42 @@ import it.smartio.docs.builder.SectionBuilder;
  */
 public class CodeFactory {
 
-	/**
-	 * Creates a {@link CodeFactory} for a specific language.
-	 *
-	 * @param name
-	 * @param section
-	 */
-	public static CodeParser of(String name, SectionBuilder builder) {
-		switch (name.toLowerCase()) {
-		case "ini":
-			return new CodeParserIni(builder);
-		case "conf":
-			return new CodeParserConf(builder);
-		case "yaml":
-			return new CodeParserYaml(builder);
-		case "shell":
-			return new CodeParserShell(builder);
+  /**
+   * Creates a {@link CodeFactory} for a specific language.
+   *
+   * @param name
+   * @param section
+   */
+  public static CodeParser of(String name, SectionBuilder builder) {
+    switch (name.toLowerCase()) {
+      case "ini":
+        return new CodeParserIni(builder);
+      case "conf":
+        return new CodeParserConf(builder);
+      case "yaml":
+        return new CodeParserYaml(builder);
+      case "shell":
+        return new CodeParserShell(builder);
 
-		case "meta":
-			return new CodeParserMeta(builder);
-		case "java":
-			return new CodeParserJava(builder);
-		case "c":
-		case "cpp":
-		case "c++":
-			return new CodeParserCpp(builder);
+      case "meta":
+        return new CodeParserMeta(builder);
+      case "java":
+        return new CodeParserJava(builder);
+      case "c":
+      case "cpp":
+      case "c++":
+        return new CodeParserCpp(builder);
 
-		case "xml":
-			return new CodeParserXml(builder);
-		case "json":
-			return new CodeParserJson(builder);
+      case "xml":
+        return new CodeParserXml(builder);
+      case "json":
+        return new CodeParserJson(builder);
 
-		case "api":
-			return new CodeParserApi(builder);
+      case "api":
+        return new CodeParserApi(builder);
 
-		default:
-			return new CodeParserDefault(builder);
-		}
-	}
+      default:
+        return new CodeParserDefault(builder);
+    }
+  }
 }

@@ -29,50 +29,50 @@ import it.smartio.docs.markdown.tables.TableRow;
  */
 class MarkdownTable extends MarkdownVisitor {
 
-	private final TableBuilder table;
+  private final TableBuilder table;
 
-	/**
-	 * Constructs an instance of {@link MarkdownTable}.
-	 *
-	 * @param content
-	 */
-	public MarkdownTable(TableBuilder table) {
-		this.table = table;
-	}
+  /**
+   * Constructs an instance of {@link MarkdownTable}.
+   *
+   * @param content
+   */
+  public MarkdownTable(TableBuilder table) {
+    this.table = table;
+  }
 
-	/**
-	 * Get the current {@link TableBuilder} .
-	 */
-	protected final TableBuilder getTable() {
-		return this.table;
-	}
+  /**
+   * Get the current {@link TableBuilder} .
+   */
+  protected final TableBuilder getTable() {
+    return this.table;
+  }
 
-	/**
-	 * Processes the {@link CustomNode} of a table
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(CustomNode node) {
-		if (node instanceof TableHead) {
-			getTable().addHead();
-			visitChildren(node);
-		} else if (node instanceof TableBody) {
-			getTable().addBody();
-			visitChildren(node);
-		} else if (node instanceof TableRow) {
-			getTable().addRow();
-			visitChildren(node);
-		} else if (node instanceof TableCell) {
-			TableCell cell = (TableCell) node;
-			if (node.getParent().getParent() instanceof TableHead) {
-				getTable().addColumn(cell.getWidth(), cell.getAlignment().name().toLowerCase());
-			}
-			CellBuilder content = getTable().addCell(1, 1);
-			MarkdownBuilder builder = new MarkdownBuilder(content.getContent(), 0);
-			builder.visitChildren(node);
-		} else {
-			super.visitChildren(node);
-		}
-	}
+  /**
+   * Processes the {@link CustomNode} of a table
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(CustomNode node) {
+    if (node instanceof TableHead) {
+      getTable().addHead();
+      visitChildren(node);
+    } else if (node instanceof TableBody) {
+      getTable().addBody();
+      visitChildren(node);
+    } else if (node instanceof TableRow) {
+      getTable().addRow();
+      visitChildren(node);
+    } else if (node instanceof TableCell) {
+      TableCell cell = (TableCell) node;
+      if (node.getParent().getParent() instanceof TableHead) {
+        getTable().addColumn(cell.getWidth(), cell.getAlignment().name().toLowerCase());
+      }
+      CellBuilder content = getTable().addCell(1, 1);
+      MarkdownBuilder builder = new MarkdownBuilder(content.getContent(), 0);
+      builder.visitChildren(node);
+    } else {
+      super.visitChildren(node);
+    }
+  }
 }

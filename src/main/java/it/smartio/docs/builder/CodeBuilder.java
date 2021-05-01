@@ -22,122 +22,122 @@ import it.smartio.docs.CodeNode;
  */
 public class CodeBuilder extends ContentBuilder implements CodeNode {
 
-	private boolean styled;
-	private String padding;
-	private String background;
-	private String textColor;
-	private String borderColor;
-	private String fontSize;
+  private boolean styled;
+  private String  padding;
+  private String  background;
+  private String  textColor;
+  private String  borderColor;
+  private String  fontSize;
 
-	/**
-	 * Constructs an instance of {@link CodeBuilder}.
-	 *
-	 * @param isSimple
-	 */
-	public CodeBuilder(boolean styled) {
-		this.styled = styled;
-		this.fontSize = "11pt";
-		this.padding = "2pt 4pt";
-		this.background = "#eeeeee";
-		this.textColor = null;
-		this.borderColor = "#aaaaaa";
-	}
+  /**
+   * Constructs an instance of {@link CodeBuilder}.
+   *
+   * @param isSimple
+   */
+  public CodeBuilder(boolean styled) {
+    this.styled = styled;
+    this.fontSize = "11pt";
+    this.padding = "2pt 4pt";
+    this.background = "#eeeeee";
+    this.textColor = null;
+    this.borderColor = "#aaaaaa";
+  }
 
-	/**
-	 * Return <code>true</code> id the code is styled.
-	 */
-	@Override
-	public final boolean isStyled() {
-		return this.styled;
-	}
+  /**
+   * Return <code>true</code> id the code is styled.
+   */
+  @Override
+  public final boolean isStyled() {
+    return this.styled;
+  }
 
-	public final void setStyled(boolean styled) {
-		this.styled = styled;
-	}
+  public final void setStyled(boolean styled) {
+    this.styled = styled;
+  }
 
-	/**
-	 * Gets the background color.
-	 */
-	@Override
-	public final String getFontSize() {
-		return this.fontSize;
-	}
+  /**
+   * Gets the background color.
+   */
+  @Override
+  public final String getFontSize() {
+    return this.fontSize;
+  }
 
-	/**
-	 * Gets the background color.
-	 */
-	@Override
-	public final String getBackground() {
-		return this.background;
-	}
+  /**
+   * Gets the background color.
+   */
+  @Override
+  public final String getBackground() {
+    return this.background;
+  }
 
-	/**
-	 * Gets the border color.
-	 */
-	@Override
-	public final String getTextColor() {
-		return this.textColor;
-	}
+  /**
+   * Gets the border color.
+   */
+  @Override
+  public final String getTextColor() {
+    return this.textColor;
+  }
 
-	/**
-	 * Gets the border color.
-	 */
-	@Override
-	public final String getBorderColor() {
-		return this.borderColor;
-	}
+  /**
+   * Gets the border color.
+   */
+  @Override
+  public final String getBorderColor() {
+    return this.borderColor;
+  }
 
-	@Override
-	public String getPadding() {
-		return this.padding;
-	}
+  @Override
+  public String getPadding() {
+    return this.padding;
+  }
 
-	/**
-	 * @param background
-	 */
-	public final void setFontSize(String fontSize) {
-		this.fontSize = fontSize;
-	}
+  /**
+   * @param background
+   */
+  public final void setFontSize(String fontSize) {
+    this.fontSize = fontSize;
+  }
 
-	/**
-	 * @param background
-	 */
-	public final void setPadding(String padding) {
-		this.padding = padding;
-	}
+  /**
+   * @param background
+   */
+  public final void setPadding(String padding) {
+    this.padding = padding;
+  }
 
-	/**
-	 * @param background
-	 */
-	public final void setBackground(String background) {
-		this.background = background;
-	}
+  /**
+   * @param background
+   */
+  public final void setBackground(String background) {
+    this.background = background;
+  }
 
-	/**
-	 * @param borderColor
-	 */
-	public final void setTextColor(String textColor) {
-		this.textColor = textColor;
-	}
+  /**
+   * @param borderColor
+   */
+  public final void setTextColor(String textColor) {
+    this.textColor = textColor;
+  }
 
-	/**
-	 * @param borderColor
-	 */
-	public final void setBorderColor(String borderColor) {
-		this.borderColor = borderColor;
-	}
+  /**
+   * @param borderColor
+   */
+  public final void setBorderColor(String borderColor) {
+    this.borderColor = borderColor;
+  }
 
-	@Override
-	public void addContent(String content) {
-		addNode(new TextBuilder(content));
-	}
+  @Override
+  public void addContent(String content) {
+    addNode(new TextBuilder(content));
+  }
 
-	/**
-	 * Add a child {@link NodeBuilder}.
-	 *
-	 * @param node
-	 */
-	public final <N extends NodeBuilder> N addNode(N node) {
-		return add(node);
-	}
+  /**
+   * Add a child {@link NodeBuilder}.
+   *
+   * @param node
+   */
+  public final <N extends NodeBuilder> N addNode(N node) {
+    return add(node);
+  }
 }

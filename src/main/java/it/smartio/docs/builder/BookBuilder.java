@@ -27,56 +27,56 @@ import it.smartio.docs.Node;
  */
 public class BookBuilder extends PageBuilder implements Book {
 
-	private int prefaceOffset = 0;
-	private int chapterOffset = 0;
-	private final Map<String, String> identifiers = new HashMap<>();
+  private int                       prefaceOffset = 0;
+  private int                       chapterOffset = 0;
+  private final Map<String, String> identifiers   = new HashMap<>();
 
-	/**
-	 * Constructs an instance of {@link BookBuilder}.
-	 */
-	public BookBuilder() {
-		super(0, null);
-	}
+  /**
+   * Constructs an instance of {@link BookBuilder}.
+   */
+  public BookBuilder() {
+    super(0, null);
+  }
 
-	@Override
-	public final int getOffset() {
-		return -1;
-	}
+  @Override
+  public final int getOffset() {
+    return -1;
+  }
 
-	@Override
-	public PageBuilder addSection() {
-		return add(new ChapterBuilder(this, 2, this.prefaceOffset++));
-	}
+  @Override
+  public PageBuilder addSection() {
+    return add(new ChapterBuilder(this, 2, this.prefaceOffset++));
+  }
 
-	public PageBuilder addChapter() {
-		return add(new ChapterBuilder(this, 1, this.chapterOffset++));
-	}
+  public PageBuilder addChapter() {
+    return add(new ChapterBuilder(this, 1, this.chapterOffset++));
+  }
 
-	private final String getId(String key) {
-		String id = key.toLowerCase().replace(" ", "-").substring(1);
-		return this.identifiers.containsKey(id) ? this.identifiers.get(id) : key;
-	}
+  private final String getId(String key) {
+    String id = key.toLowerCase().replace(" ", "-").substring(1);
+    return this.identifiers.containsKey(id) ? this.identifiers.get(id) : key;
+  }
 
-	@Override
-	protected void addIndex(Chapter node) {
-		if (!node.getTitle().isEmpty()) {
-			String title = node.getTitle().toLowerCase().replace(" ", "-");
-			this.identifiers.put(title, node.getId());
-		}
-	}
+  @Override
+  protected void addIndex(Chapter node) {
+    if (!node.getTitle().isEmpty()) {
+      String title = node.getTitle().toLowerCase().replace(" ", "-");
+      this.identifiers.put(title, node.getId());
+    }
+  }
 
-	private void processNode(Node node) {
-		if (node instanceof LinkBuilder) {
-			LinkBuilder link = (LinkBuilder) node;
-			if (link.getLink().startsWith("#")) {
-				link.setLink(getId(link.getLink()));
-			}
-		}
-		node.nodes().forEach(this::processNode);
-	}
+  private void processNode(Node node) {
+    if (node instanceof LinkBuilder) {
+      LinkBuilder link = (LinkBuilder) node;
+      if (link.getLink().startsWith("#")) {
+        link.setLink(getId(link.getLink()));
+      }
+    }
+    node.nodes().forEach(this::processNode);
+  }
 
-	public final Book build() {
-		processNode(this);
-		return this;
-	}
+  public final Book build() {
+    processNode(this);
+    return this;
+  }
 }

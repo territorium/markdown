@@ -20,10 +20,10 @@ package it.smartio.docs;
  */
 public interface Link extends Node {
 
-	String getLink();
+  String getLink();
 
-	@Override
-	default <R> void accept(NodeVisitor<R> visitor, R data) {
-		visitor.visit(this, data);
-	}
+  @Override
+  default <R> void accept(NodeVisitor<R> visitor, R data) {
+    visitor.visit(this, data);
+  }
 }

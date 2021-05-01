@@ -26,51 +26,50 @@ import it.smartio.docs.builder.SectionBuilder;
  */
 class CodeParserShell extends CodeParserDefault {
 
-	private static final Pattern PATTERN = Pattern.compile("^(#.+)|([^\\s]+)(.+)?$", Pattern.CASE_INSENSITIVE);
-	private static final Pattern PATTERN_ARGS = Pattern.compile("(\\s+-[^\\s]+)?(\\s+[^\\s]+)",
-			Pattern.CASE_INSENSITIVE);
+  private static final Pattern PATTERN      = Pattern.compile("^(#.+)|([^\\s]+)(.+)?$", Pattern.CASE_INSENSITIVE);
+  private static final Pattern PATTERN_ARGS = Pattern.compile("(\\s+-[^\\s]+)?(\\s+[^\\s]+)", Pattern.CASE_INSENSITIVE);
 
-	/**
-	 * Constructs an instance of {@link CodeParserShell}.
-	 *
-	 * @param builder
-	 */
-	public CodeParserShell(SectionBuilder builder) {
-		super(builder);
-	}
+  /**
+   * Constructs an instance of {@link CodeParserShell}.
+   *
+   * @param builder
+   */
+  public CodeParserShell(SectionBuilder builder) {
+    super(builder);
+  }
 
-	/**
-	 * Parses the code text
-	 *
-	 * @param node
-	 */
-	@Override
-	public void parse(String text) {
-		setFontSize("10pt");
+  /**
+   * Parses the code text
+   *
+   * @param node
+   */
+  @Override
+  public void parse(String text) {
+    setFontSize("10pt");
 
-		for (String line : text.split("\\n")) {
-			Matcher matcher = CodeParserShell.PATTERN.matcher(line);
-			if (matcher.find()) {
-				if (matcher.group(1) != null) { // Comment
-					addInline(line).setItalic().setColor(CodeToken.COMMENT.COLOR);
-				}
+    for (String line : text.split("\\n")) {
+      Matcher matcher = CodeParserShell.PATTERN.matcher(line);
+      if (matcher.find()) {
+        if (matcher.group(1) != null) { // Comment
+          addInline(line).setItalic().setColor(CodeToken.COMMENT.COLOR);
+        }
 
-				if (matcher.group(2) != null) { // Command
-					addInline(matcher.group(2)).setBold().setColor(CodeToken.PARAMETER.COLOR);
+        if (matcher.group(2) != null) { // Command
+          addInline(matcher.group(2)).setBold().setColor(CodeToken.PARAMETER.COLOR);
 
-					String arguments = matcher.group(3);
-					Matcher args = CodeParserShell.PATTERN_ARGS.matcher(arguments);
-					while (args.find()) {// Arguments
-						if (args.group(1) != null) {
-							addInline(args.group(1)).setColor(CodeToken.VALUE.COLOR);
-						}
-						addText(args.group(2));
-					}
-				}
-			} else {
-				addText(line);
-			}
-			addText("\n");
-		}
-	}
+          String arguments = matcher.group(3);
+          Matcher args = CodeParserShell.PATTERN_ARGS.matcher(arguments);
+          while (args.find()) {// Arguments
+            if (args.group(1) != null) {
+              addInline(args.group(1)).setColor(CodeToken.VALUE.COLOR);
+            }
+            addText(args.group(2));
+          }
+        }
+      } else {
+        addText(line);
+      }
+      addText("\n");
+    }
+  }
 }

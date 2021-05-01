@@ -26,42 +26,42 @@ import it.smartio.docs.builder.SectionBuilder;
  */
 class CodeParserIni extends CodeParserDefault {
 
-	private static final String PATTERN_TEXT = "^(?:(\\[[^;]+)|([^=]+)(=[^;]*))?(;.+)?$";
-	private static final Pattern PATTERN = Pattern.compile(CodeParserIni.PATTERN_TEXT, Pattern.CASE_INSENSITIVE);
+  private static final String  PATTERN_TEXT = "^(?:(\\[[^;]+)|([^=]+)(=[^;]*))?(;.+)?$";
+  private static final Pattern PATTERN      = Pattern.compile(CodeParserIni.PATTERN_TEXT, Pattern.CASE_INSENSITIVE);
 
-	/**
-	 * Constructs an instance of {@link CodeParserIni}.
-	 *
-	 * @param builder
-	 */
-	public CodeParserIni(SectionBuilder builder) {
-		super(builder);
-	}
+  /**
+   * Constructs an instance of {@link CodeParserIni}.
+   *
+   * @param builder
+   */
+  public CodeParserIni(SectionBuilder builder) {
+    super(builder);
+  }
 
-	/**
-	 * Parses the code text
-	 *
-	 * @param node
-	 */
-	@Override
-	public void parse(String text) {
-		for (String line : text.split("\\n")) {
-			Matcher matcher = CodeParserIni.PATTERN.matcher(line);
-			if (matcher.find()) {
-				if (matcher.group(1) != null) { // Section
-					addInline(matcher.group(1)).setBold().setColor(CodeToken.SECTION.COLOR);
-				} else if (matcher.group(2) != null) { // Parameter
-					addInline(matcher.group(2)).setColor(CodeToken.PARAMETER.COLOR);
-					addInline(matcher.group(3)).setColor(CodeToken.VALUE.COLOR);
-				}
+  /**
+   * Parses the code text
+   *
+   * @param node
+   */
+  @Override
+  public void parse(String text) {
+    for (String line : text.split("\\n")) {
+      Matcher matcher = CodeParserIni.PATTERN.matcher(line);
+      if (matcher.find()) {
+        if (matcher.group(1) != null) { // Section
+          addInline(matcher.group(1)).setBold().setColor(CodeToken.SECTION.COLOR);
+        } else if (matcher.group(2) != null) { // Parameter
+          addInline(matcher.group(2)).setColor(CodeToken.PARAMETER.COLOR);
+          addInline(matcher.group(3)).setColor(CodeToken.VALUE.COLOR);
+        }
 
-				if (matcher.group(4) != null) { // Comment
-					addInline(matcher.group(4)).setItalic().setColor(CodeToken.COMMENT.COLOR);
-				}
-			} else {
-				addText(line);
-			}
-			addText("\n");
-		}
-	}
+        if (matcher.group(4) != null) { // Comment
+          addInline(matcher.group(4)).setItalic().setColor(CodeToken.COMMENT.COLOR);
+        }
+      } else {
+        addText(line);
+      }
+      addText("\n");
+    }
+  }
 }

@@ -30,161 +30,163 @@ import it.smartio.docs.builder.TableBuilder.RowBuilder;
  */
 class CodeParserApi implements CodeParser {
 
-	private static String HEAD_COLOR = "#aaaaaa";
-	private static String GET_COLOR = "#61affe";
-	private static String POST_COLOR = "#49cc90";
-	private static String PUT_COLOR = "#fca130";
-	private static String DELETE_COLOR = "#f13e3e";
+  private static String        HEAD_COLOR        = "#aaaaaa";
+  private static String        GET_COLOR         = "#61affe";
+  private static String        POST_COLOR        = "#49cc90";
+  private static String        PUT_COLOR         = "#fca130";
+  private static String        DELETE_COLOR      = "#f13e3e";
 
-	private static String HEAD_BACKGROUND = "#eeeeee";
-	private static String GET_BACKGROUND = "#c7e3ff";
-	private static String POST_BACKGROUND = "#bfedd8";
-	private static String PUT_BACKGROUND = "#fdcf96";
-	private static String DELETE_BACKGROUND = "#fbcbcb";
+  private static String        HEAD_BACKGROUND   = "#eeeeee";
+  private static String        GET_BACKGROUND    = "#c7e3ff";
+  private static String        POST_BACKGROUND   = "#bfedd8";
+  private static String        PUT_BACKGROUND    = "#fdcf96";
+  private static String        DELETE_BACKGROUND = "#fbcbcb";
 
-	private static final String PATTERN_TEXT = "^(\\s*)([\\w-]+):\\s*(.+)?$";
-	private static final String PATTERN_IMAGE = "!\\[\\]\\(([^\\)]+)\\)(?:\\{width=(.+)\\})?";
-	private static final Pattern PATTERN = Pattern.compile(CodeParserApi.PATTERN_TEXT, Pattern.CASE_INSENSITIVE);
-	private static final Pattern PATTERN2 = Pattern.compile(CodeParserApi.PATTERN_IMAGE, Pattern.CASE_INSENSITIVE);
+  private static final String  PATTERN_TEXT      = "^(\\s*)([\\w-]+):\\s*(.+)?$";
+  private static final String  PATTERN_IMAGE     = "!\\[\\]\\(([^\\)]+)\\)(?:\\{width=(.+)\\})?";
+  private static final Pattern PATTERN           =
+      Pattern.compile(CodeParserApi.PATTERN_TEXT, Pattern.CASE_INSENSITIVE);
+  private static final Pattern PATTERN2          =
+      Pattern.compile(CodeParserApi.PATTERN_IMAGE, Pattern.CASE_INSENSITIVE);
 
-	private final TableBuilder table;
+  private final TableBuilder   table;
 
-	/**
-	 * Constructs an instance of {@link CodeParserApi}.
-	 *
-	 * @param builder
-	 */
-	public CodeParserApi(SectionBuilder builder) {
-		this.table = builder.addVirtualTable();
-	}
+  /**
+   * Constructs an instance of {@link CodeParserApi}.
+   *
+   * @param builder
+   */
+  public CodeParserApi(SectionBuilder builder) {
+    this.table = builder.addVirtualTable();
+  }
 
-	protected final String getColor(String method) {
-		switch (method) {
-		case "GET":
-			return CodeParserApi.GET_COLOR;
-		case "POST":
-			return CodeParserApi.POST_COLOR;
-		case "PUT":
-		case "PATCH":
-			return CodeParserApi.PUT_COLOR;
-		case "DELETE":
-			return CodeParserApi.DELETE_COLOR;
-		case "HEAD":
-		default:
-			return CodeParserApi.HEAD_COLOR;
-		}
-	}
+  protected final String getColor(String method) {
+    switch (method) {
+      case "GET":
+        return CodeParserApi.GET_COLOR;
+      case "POST":
+        return CodeParserApi.POST_COLOR;
+      case "PUT":
+      case "PATCH":
+        return CodeParserApi.PUT_COLOR;
+      case "DELETE":
+        return CodeParserApi.DELETE_COLOR;
+      case "HEAD":
+      default:
+        return CodeParserApi.HEAD_COLOR;
+    }
+  }
 
-	protected final String getBackground(String method) {
-		switch (method) {
-		case "GET":
-			return CodeParserApi.GET_BACKGROUND;
-		case "POST":
-			return CodeParserApi.POST_BACKGROUND;
-		case "PUT":
-		case "PATCH":
-			return CodeParserApi.PUT_BACKGROUND;
-		case "DELETE":
-			return CodeParserApi.DELETE_BACKGROUND;
-		case "HEAD":
-		default:
-			return CodeParserApi.HEAD_BACKGROUND;
-		}
-	}
+  protected final String getBackground(String method) {
+    switch (method) {
+      case "GET":
+        return CodeParserApi.GET_BACKGROUND;
+      case "POST":
+        return CodeParserApi.POST_BACKGROUND;
+      case "PUT":
+      case "PATCH":
+        return CodeParserApi.PUT_BACKGROUND;
+      case "DELETE":
+        return CodeParserApi.DELETE_BACKGROUND;
+      case "HEAD":
+      default:
+        return CodeParserApi.HEAD_BACKGROUND;
+    }
+  }
 
-	/**
-	 * Parses the code text
-	 *
-	 * @param node
-	 */
-	@Override
-	public void parse(String text) {
-		String method = "";
-		String content = null;
-		String contentType = "application/json";
+  /**
+   * Parses the code text
+   *
+   * @param node
+   */
+  @Override
+  public void parse(String text) {
+    String method = "";
+    String content = null;
+    String contentType = "application/json";
 
-		this.table.addColumn(1, "left");
-		this.table.addColumn(4, "left");
-		this.table.addBody();
+    this.table.addColumn(1, "left");
+    this.table.addColumn(4, "left");
+    this.table.addBody();
 
-		for (String line : text.split("\\n")) {
-			Matcher matcher = CodeParserApi.PATTERN.matcher(line);
-			if (matcher.find()) {
-				int intend = matcher.group(1).length();
-				String name = matcher.group(2);
-				String value = matcher.group(3);
+    for (String line : text.split("\\n")) {
+      Matcher matcher = CodeParserApi.PATTERN.matcher(line);
+      if (matcher.find()) {
+        int intend = matcher.group(1).length();
+        String name = matcher.group(2);
+        String value = matcher.group(3);
 
-				if (content != null) {
-					processContent(this.table, content, contentType);
-					content = null;
-					contentType = "application/json";
-				}
+        if (content != null) {
+          processContent(this.table, content, contentType);
+          content = null;
+          contentType = "application/json";
+        }
 
-				if ("content".equalsIgnoreCase(name)) {
-					content = value;
-				} else if (intend == 0) {
-					if ("method".equalsIgnoreCase(name)) {
-						method = value.toUpperCase();
-					} else if ("path".equalsIgnoreCase(name)) {
-						RowBuilder row = this.table.addRow();
-						ParagraphBuilder cell = row.addCell(1, 2).getContent().setPadding("5pt", "7pt");
-						cell.addInline().setPadding("15pt", "5pt").setBackground(getColor(method)).setBold()
-								.setRadius("3px").addContent(method.toUpperCase());
-						cell.addInline().setPadding("5pt", "5pt").setBold().addContent(value);
-					} else {
-						RowBuilder row = this.table.addRow();
-						row.addCell(1, 2).getContent().setPadding("5pt", "2pt").addInline().setPadding("5pt", "2pt")
-								.setBackground("#ffffff").setRadius("3px").setBold().addContent(name);
-					}
-				} else if (intend > 0) {
-					if ("content-type".equalsIgnoreCase(name)) {
-						contentType = value.trim();
-					}
+        if ("content".equalsIgnoreCase(name)) {
+          content = value;
+        } else if (intend == 0) {
+          if ("method".equalsIgnoreCase(name)) {
+            method = value.toUpperCase();
+          } else if ("path".equalsIgnoreCase(name)) {
+            RowBuilder row = this.table.addRow();
+            ParagraphBuilder cell = row.addCell(1, 2).getContent().setPadding("5pt", "7pt");
+            cell.addInline().setPadding("15pt", "5pt").setBackground(getColor(method)).setBold().setRadius("3px")
+                .addContent(method.toUpperCase());
+            cell.addInline().setPadding("5pt", "5pt").setBold().addContent(value);
+          } else {
+            RowBuilder row = this.table.addRow();
+            row.addCell(1, 2).getContent().setPadding("5pt", "2pt").addInline().setPadding("5pt", "2pt")
+                .setBackground("#ffffff").setRadius("3px").setBold().addContent(name);
+          }
+        } else if (intend > 0) {
+          if ("content-type".equalsIgnoreCase(name)) {
+            contentType = value.trim();
+          }
 
-					if ("content".equalsIgnoreCase(name)) {
-						content = value;
-					} else if (value != null) {
-						RowBuilder row = this.table.addRow();
-						row.addCell(1, 1).getContent().setPadding("5pt", "2pt").addInline().setPadding("15pt", "5pt")
-								.setBold().addContent(name);
-						row.addCell(1, 1).getContent().setPadding("5pt", "2pt").addInline().setPadding("15pt", "5pt")
-								.addContent(value);
-					}
-				}
-			} else if (content != null) {
-				content += "\n" + line;
-			}
-		}
+          if ("content".equalsIgnoreCase(name)) {
+            content = value;
+          } else if (value != null) {
+            RowBuilder row = this.table.addRow();
+            row.addCell(1, 1).getContent().setPadding("5pt", "2pt").addInline().setPadding("15pt", "5pt").setBold()
+                .addContent(name);
+            row.addCell(1, 1).getContent().setPadding("5pt", "2pt").addInline().setPadding("15pt", "5pt")
+                .addContent(value);
+          }
+        }
+      } else if (content != null) {
+        content += "\n" + line;
+      }
+    }
 
-		if (content != null) {
-			processContent(this.table, content, contentType);
-			content = null;
-			contentType = "application/json";
-		}
+    if (content != null) {
+      processContent(this.table, content, contentType);
+      content = null;
+      contentType = "application/json";
+    }
 
-		this.table.setBorderColor(getColor(method));
-		this.table.setBackgroundColor(getBackground(method));
-	}
+    this.table.setBorderColor(getColor(method));
+    this.table.setBackgroundColor(getBackground(method));
+  }
 
-	protected final void processContent(TableBuilder table, String content, String contentType) {
-		RowBuilder row = table.addRow();
-		ParagraphBuilder paragraph = row.addCell(1, 2).getContent().setPadding("1pt", "2pt");
+  protected final void processContent(TableBuilder table, String content, String contentType) {
+    RowBuilder row = table.addRow();
+    ParagraphBuilder paragraph = row.addCell(1, 2).getContent().setPadding("1pt", "2pt");
 
-		if ("application/json".equalsIgnoreCase(contentType.trim())) {
-			((CodeParserDefault) CodeFactory.of("json", paragraph)).setStyled(false).parse(content);
-		} else if ("application/xml".equalsIgnoreCase(contentType.trim())) {
-			((CodeParserDefault) CodeFactory.of("xml", paragraph)).setStyled(false).parse(content);
-		} else if (contentType.trim().toLowerCase().startsWith("image/")) {
-			Matcher matcher = CodeParserApi.PATTERN2.matcher(content.trim());
-			if (matcher.find()) {
-				String source = matcher.group(1);
-				String width = matcher.group(2);
-				paragraph.addImage(source, null, null, width, null);
-			} else {
-				paragraph.addContent(content);
-			}
-		} else {
-			paragraph.addCode().addContent(content);
-		}
-	}
+    if ("application/json".equalsIgnoreCase(contentType.trim())) {
+      ((CodeParserDefault) CodeFactory.of("json", paragraph)).setStyled(false).parse(content);
+    } else if ("application/xml".equalsIgnoreCase(contentType.trim())) {
+      ((CodeParserDefault) CodeFactory.of("xml", paragraph)).setStyled(false).parse(content);
+    } else if (contentType.trim().toLowerCase().startsWith("image/")) {
+      Matcher matcher = CodeParserApi.PATTERN2.matcher(content.trim());
+      if (matcher.find()) {
+        String source = matcher.group(1);
+        String width = matcher.group(2);
+        paragraph.addImage(source, null, null, width, null);
+      } else {
+        paragraph.addContent(content);
+      }
+    } else {
+      paragraph.addCode().addContent(content);
+    }
+  }
 }

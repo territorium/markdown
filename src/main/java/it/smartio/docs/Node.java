@@ -22,7 +22,7 @@ import java.util.List;
  */
 public interface Node extends Iterable<Node> {
 
-	List<Node> nodes();
+  List<Node> nodes();
 
-	<R> void accept(NodeVisitor<R> visitor, R data);
+  <R> void accept(NodeVisitor<R> visitor, R data);
 }

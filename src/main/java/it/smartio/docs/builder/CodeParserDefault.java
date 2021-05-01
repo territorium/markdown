@@ -20,76 +20,76 @@ package it.smartio.docs.builder;
  */
 public class CodeParserDefault implements CodeParser {
 
-	private final CodeBuilder builder;
+  private final CodeBuilder builder;
 
-	/**
-	 * Constructs an instance of {@link CodeParserDefault}.
-	 *
-	 * @param handler
-	 */
-	public CodeParserDefault(SectionBuilder builder) {
-		this.builder = builder.addStyledCode();
-	}
+  /**
+   * Constructs an instance of {@link CodeParserDefault}.
+   *
+   * @param handler
+   */
+  public CodeParserDefault(SectionBuilder builder) {
+    this.builder = builder.addStyledCode();
+  }
 
-	public final CodeParserDefault setStyled(boolean styled) {
-		this.builder.setStyled(styled);
-		return this;
-	}
+  public final CodeParserDefault setStyled(boolean styled) {
+    this.builder.setStyled(styled);
+    return this;
+  }
 
-	/**
-	 * Add a child {@link TextBuilder}.
-	 *
-	 * @param text
-	 */
-	protected final TextBuilder addText(String text) {
-		return this.builder.addNode(new TextBuilder(text));
-	}
+  /**
+   * Add a child {@link TextBuilder}.
+   *
+   * @param text
+   */
+  protected final TextBuilder addText(String text) {
+    return this.builder.addNode(new TextBuilder(text));
+  }
 
-	/**
-	 * Add a child {@link InlineBuilder}.
-	 */
-	protected final InlineBuilder addInline() {
-		return this.builder.addNode(new InlineBuilder());
-	}
+  /**
+   * Add a child {@link InlineBuilder}.
+   */
+  protected final InlineBuilder addInline() {
+    return this.builder.addNode(new InlineBuilder());
+  }
 
-	/**
-	 * Add a child {@link InlineBuilder}.
-	 */
-	protected final InlineBuilder addInline(String text) {
-		InlineBuilder inline = addInline();
-		inline.add(new TextBuilder(text));
-		return inline;
-	}
+  /**
+   * Add a child {@link InlineBuilder}.
+   */
+  protected final InlineBuilder addInline(String text) {
+    InlineBuilder inline = addInline();
+    inline.add(new TextBuilder(text));
+    return inline;
+  }
 
-	/**
-	 * Add a child {@link InlineBuilder}.
-	 */
-	protected final TableBuilder addCustomTable() {
-		return this.builder.addNode(new TableBuilder(true));
-	}
+  /**
+   * Add a child {@link InlineBuilder}.
+   */
+  protected final TableBuilder addCustomTable() {
+    return this.builder.addNode(new TableBuilder(true));
+  }
 
-	protected final void setPadding(String padding) {
-		this.builder.setPadding(padding);
-	}
+  protected final void setPadding(String padding) {
+    this.builder.setPadding(padding);
+  }
 
-	protected final void setBackground(String background) {
-		this.builder.setBackground(background);
-	}
+  protected final void setBackground(String background) {
+    this.builder.setBackground(background);
+  }
 
-	protected final void setBorderColor(String borderColor) {
-		this.builder.setBorderColor(borderColor);
-	}
+  protected final void setBorderColor(String borderColor) {
+    this.builder.setBorderColor(borderColor);
+  }
 
-	protected final void setTextColor(String textColor) {
-		this.builder.setTextColor(textColor);
-	}
+  protected final void setTextColor(String textColor) {
+    this.builder.setTextColor(textColor);
+  }
 
-	protected final void setFontSize(String fontSize) {
-		this.builder.setFontSize(fontSize);
-	}
+  protected final void setFontSize(String fontSize) {
+    this.builder.setFontSize(fontSize);
+  }
 
-	@Override
-	public void parse(String text) {
-		addText(text);
-	}
+  @Override
+  public void parse(String text) {
+    addText(text);
+  }
 }

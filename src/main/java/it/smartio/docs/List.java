@@ -20,10 +20,10 @@ package it.smartio.docs;
  */
 public interface List extends Node {
 
-	boolean isOrdered();
+  boolean isOrdered();
 
-	@Override
-	default <R> void accept(NodeVisitor<R> visitor, R data) {
-		visitor.visit(this, data);
-	}
+  @Override
+  default <R> void accept(NodeVisitor<R> visitor, R data) {
+    visitor.visit(this, data);
+  }
 }

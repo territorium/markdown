@@ -25,58 +25,58 @@ import it.smartio.docs.Message.Style;
  */
 public abstract class PageBuilder extends SectionBuilder implements Chapter {
 
-	private String title;
+  private String            title;
 
-	private final String id;
-	private final int level;
-	private final PageBuilder parent;
+  private final String      id;
+  private final int         level;
+  private final PageBuilder parent;
 
-	/**
-	 * Constructs an instance of {@link PageBuilder}.
-	 */
-	protected PageBuilder(int level, PageBuilder parent) {
-		this.level = level;
-		this.parent = parent;
-		this.id = Long.toHexString(new Random().nextLong());
-	}
+  /**
+   * Constructs an instance of {@link PageBuilder}.
+   */
+  protected PageBuilder(int level, PageBuilder parent) {
+    this.level = level;
+    this.parent = parent;
+    this.id = Long.toHexString(new Random().nextLong());
+  }
 
-	@Override
-	public final int getLevel() {
-		return this.level;
-	}
+  @Override
+  public final int getLevel() {
+    return this.level;
+  }
 
-	@Override
-	public final String getId() {
-		return this.id;
-	}
+  @Override
+  public final String getId() {
+    return this.id;
+  }
 
-	@Override
-	public final String getTitle() {
-		return this.title == null ? "" : this.title;
-	}
+  @Override
+  public final String getTitle() {
+    return this.title == null ? "" : this.title;
+  }
 
-	@Override
-	public final Chapter getParent() {
-		return this.parent;
-	}
+  @Override
+  public final Chapter getParent() {
+    return this.parent;
+  }
 
-	public final PageBuilder setTitle(String title) {
-		this.title = (title == null) ? title : title.trim();
-		addIndex(this);
-		return this;
-	}
+  public final PageBuilder setTitle(String title) {
+    this.title = (title == null) ? title : title.trim();
+    addIndex(this);
+    return this;
+  }
 
-	public abstract PageBuilder addSection();
+  public abstract PageBuilder addSection();
 
-	public final MessageBuilder addNotification(Style style) {
-		return add(new MessageBuilder(style));
-	}
+  public final MessageBuilder addNotification(Style style) {
+    return add(new MessageBuilder(style));
+  }
 
-	public final TableBuilder addTable() {
-		return add(new TableBuilder(false));
-	}
+  public final TableBuilder addTable() {
+    return add(new TableBuilder(false));
+  }
 
-	protected void addIndex(Chapter node) {
-		this.parent.addIndex(node);
-	}
+  protected void addIndex(Chapter node) {
+    this.parent.addIndex(node);
+  }
 }

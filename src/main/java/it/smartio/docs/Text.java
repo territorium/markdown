@@ -20,12 +20,12 @@ package it.smartio.docs;
  */
 public interface Text extends Node {
 
-	String getText();
+  String getText();
 
-	boolean isCode();
+  boolean isCode();
 
-	@Override
-	default <R> void accept(NodeVisitor<R> visitor, R data) {
-		visitor.visit(this, data);
-	}
+  @Override
+  default <R> void accept(NodeVisitor<R> visitor, R data) {
+    visitor.visit(this, data);
+  }
 }

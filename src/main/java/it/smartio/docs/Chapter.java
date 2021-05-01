@@ -20,18 +20,18 @@ package it.smartio.docs;
  */
 public interface Chapter extends Node {
 
-	String getId();
+  String getId();
 
-	String getTitle();
+  String getTitle();
 
-	int getLevel();
+  int getLevel();
 
-	int getOffset();
+  int getOffset();
 
-	Chapter getParent();
+  Chapter getParent();
 
-	@Override
-	default <R> void accept(NodeVisitor<R> visitor, R data) {
-		visitor.visit(this, data);
-	}
+  @Override
+  default <R> void accept(NodeVisitor<R> visitor, R data) {
+    visitor.visit(this, data);
+  }
 }

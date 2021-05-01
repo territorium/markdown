@@ -41,6 +41,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import it.smartio.docs.Book;
 import it.smartio.docs.Renderer;
+import it.smartio.docs.fop.config.FoContext;
 import it.smartio.docs.markdown.MarkdownReader;
 
 /**
@@ -115,7 +116,7 @@ public class FoGenerator {
    * @param writer
    * @throws IOException
    */
-  protected static void writeFo(Book book, FoConfig config, Writer writer) throws IOException {
+  protected static void writeFo(Book book, FoContext config, Writer writer) throws IOException {
     try (PrintWriter printer = new PrintWriter(writer)) {
       Renderer renderer = new FoRenderer(printer, config);
       renderer.render(book);
@@ -178,7 +179,7 @@ public class FoGenerator {
    * @param book
    * @param config
    */
-  protected final InputStream getFoStream(Book book, FoConfig config) throws IOException {
+  protected final InputStream getFoStream(Book book, FoContext config) throws IOException {
     if (this.debug) {
       String name = this.name;
       File fo = new File(this.target, name + ".fo");
@@ -215,9 +216,9 @@ public class FoGenerator {
       pdf.delete();
     }
 
-    FoConfig config = FoConfig.parse(this.config);
+    FoContext config = FoContext.parse(this.config);
     try (InputStream stream = getFoStream(book, config)) {
-      FoGenerator.writePdf(pdf, stream, config.createFactory());
+      FoGenerator.writePdf(pdf, stream, config.getFactory());
     } catch (Throwable e) {
       throw new IOException(e);
     }

@@ -19,13 +19,13 @@ import org.commonmark.node.CustomBlock;
 
 public class AlertBlock extends CustomBlock {
 
-	private final Alert type;
+  private final Alert type;
 
-	public AlertBlock(Alert type) {
-		this.type = type;
-	}
+  public AlertBlock(Alert type) {
+    this.type = type;
+  }
 
-	public Alert getType() {
-		return this.type;
-	}
+  public Alert getType() {
+    return this.type;
+  }
 }

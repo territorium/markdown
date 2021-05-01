@@ -22,54 +22,56 @@ import java.util.List;
  */
 public interface Table extends Node {
 
-	enum AreaType {
-		HEAD, BODY, TAIL
-	}
+  enum AreaType {
+    HEAD,
+    BODY,
+    TAIL
+  }
 
-	boolean isVirtual();
+  boolean isVirtual();
 
-	String getBorderColor();
+  String getBorderColor();
 
-	String getBackgroundColor();
+  String getBackgroundColor();
 
-	List<Column> getColumns();
+  List<Column> getColumns();
 
-	List<Area> getAreas();
+  List<Area> getAreas();
 
-	@Override
-	default <R> void accept(NodeVisitor<R> visitor, R data) {
-		visitor.visit(this, data);
-	}
+  @Override
+  default <R> void accept(NodeVisitor<R> visitor, R data) {
+    visitor.visit(this, data);
+  }
 
-	interface Column {
+  interface Column {
 
-		int getIndex();
+    int getIndex();
 
-		int getWidth();
+    int getWidth();
 
-		String getAlign();
-	}
+    String getAlign();
+  }
 
-	interface Area {
+  interface Area {
 
-		AreaType getType();
+    AreaType getType();
 
-		List<Row> getRows();
-	}
+    List<Row> getRows();
+  }
 
-	interface Row {
+  interface Row {
 
-		List<Cell> getCells();
-	}
+    List<Cell> getCells();
+  }
 
-	interface Cell {
+  interface Cell {
 
-		int getRowSpan();
+    int getRowSpan();
 
-		int getColSpan();
+    int getColSpan();
 
-		String getAlign();
+    String getAlign();
 
-		Paragraph getContent();
-	}
+    Paragraph getContent();
+  }
 }

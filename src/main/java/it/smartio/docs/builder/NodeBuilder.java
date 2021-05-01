@@ -22,36 +22,35 @@ import java.util.List;
 import it.smartio.docs.Node;
 
 /**
- * The {@link NodeBuilder} class defines a generic node for a {@link Node}
- * structure.
+ * The {@link NodeBuilder} class defines a generic node for a {@link Node} structure.
  */
 public abstract class NodeBuilder implements Node {
 
-	private final List<Node> nodes = new ArrayList<>();
+  private final List<Node> nodes = new ArrayList<>();
 
-	/**
-	 * Returns an iterator over the child {@link Node}'s.
-	 */
-	@Override
-	public final Iterator<Node> iterator() {
-		return this.nodes.iterator();
-	}
+  /**
+   * Returns an iterator over the child {@link Node}'s.
+   */
+  @Override
+  public final Iterator<Node> iterator() {
+    return this.nodes.iterator();
+  }
 
-	/**
-	 * Iterates over the child nodes.
-	 */
-	@Override
-	public final List<Node> nodes() {
-		return this.nodes;
-	}
+  /**
+   * Iterates over the child nodes.
+   */
+  @Override
+  public final List<Node> nodes() {
+    return this.nodes;
+  }
 
-	/**
-	 * Add a child {@link NodeBuilder}.
-	 *
-	 * @param node
-	 */
-	protected final <N extends NodeBuilder> N add(N node) {
-		this.nodes.add(node);
-		return node;
-	}
+  /**
+   * Add a child {@link NodeBuilder}.
+   *
+   * @param node
+   */
+  protected final <N extends NodeBuilder> N add(N node) {
+    this.nodes.add(node);
+    return node;
+  }
 }

@@ -25,39 +25,38 @@ import it.smartio.docs.List;
  */
 public abstract class ContentBuilder extends SectionBuilder {
 
-	/**
-	 * Add a new {@link Item} to the {@link List}.
-	 */
-	public final InlineBuilder addInline() {
-		return add(new InlineBuilder());
-	}
+  /**
+   * Add a new {@link Item} to the {@link List}.
+   */
+  public final InlineBuilder addInline() {
+    return add(new InlineBuilder());
+  }
 
-	/**
-	 * Add a new {@link Item} to the {@link List}.
-	 */
-	public final InlineBuilder addFootnote() {
-		InlineBuilder builder = add(new InlineBuilder());
-		builder.setFootnote();
-		return builder;
-	}
+  /**
+   * Add a new {@link Item} to the {@link List}.
+   */
+  public final InlineBuilder addFootnote() {
+    InlineBuilder builder = add(new InlineBuilder());
+    builder.setFootnote();
+    return builder;
+  }
 
-	/**
-	 * Add a new {@link Item} to the {@link List}.
-	 */
-	public final LinkBuilder addLink(String url) {
-		return add(new LinkBuilder(url));
-	}
+  /**
+   * Add a new {@link Item} to the {@link List}.
+   */
+  public final LinkBuilder addLink(String url) {
+    return add(new LinkBuilder(url));
+  }
 
-	public void addContent(String content) {
-		content = Arrays.asList(content.split("\n")).stream().filter(s -> !s.isEmpty())
-				.collect(Collectors.joining(" "));
-		BookConfig.instance().processKeywords(content, t -> add(new TextBuilder(t)), () -> add(new InlineBuilder()));
-	}
+  public void addContent(String content) {
+    content = Arrays.asList(content.split("\n")).stream().filter(s -> !s.isEmpty()).collect(Collectors.joining(" "));
+    BookConfig.instance().processKeywords(content, t -> add(new TextBuilder(t)), () -> add(new InlineBuilder()));
+  }
 
-	/**
-	 * Add a new {@link Item} to the {@link List}.
-	 */
-	public final void addInlineCode(String text) {
-		add(new TextBuilder(text, true));
-	}
+  /**
+   * Add a new {@link Item} to the {@link List}.
+   */
+  public final void addInlineCode(String text) {
+    add(new TextBuilder(text, true));
+  }
 }

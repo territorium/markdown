@@ -26,48 +26,48 @@ import it.smartio.docs.builder.SectionBuilder;
  */
 class CodeParserYaml extends CodeParserDefault {
 
-	private static final String PATTERN_TEXT = "^(?:(?:([^:']*):)?([^#]*))(#.+)?$";
-	private static final Pattern PATTERN = Pattern.compile(CodeParserYaml.PATTERN_TEXT, Pattern.CASE_INSENSITIVE);
+  private static final String  PATTERN_TEXT = "^(?:(?:([^:']*):)?([^#]*))(#.+)?$";
+  private static final Pattern PATTERN      = Pattern.compile(CodeParserYaml.PATTERN_TEXT, Pattern.CASE_INSENSITIVE);
 
-	/**
-	 * Constructs an instance of {@link CodeParserYaml}.
-	 *
-	 * @param builder
-	 */
-	public CodeParserYaml(SectionBuilder builder) {
-		super(builder);
-	}
+  /**
+   * Constructs an instance of {@link CodeParserYaml}.
+   *
+   * @param builder
+   */
+  public CodeParserYaml(SectionBuilder builder) {
+    super(builder);
+  }
 
-	/**
-	 * Parses the code text
-	 *
-	 * @param node
-	 */
-	@Override
-	public void parse(String text) {
-		setFontSize("10pt");
-		setTextColor(CodeToken.YAML_COLOR.COLOR);
-		setBorderColor(CodeToken.YAML_COMMENT.COLOR);
-		setBackground(CodeToken.YAML_BACKGROUND.COLOR);
+  /**
+   * Parses the code text
+   *
+   * @param node
+   */
+  @Override
+  public void parse(String text) {
+    setFontSize("10pt");
+    setTextColor(CodeToken.YAML_COLOR.COLOR);
+    setBorderColor(CodeToken.YAML_COMMENT.COLOR);
+    setBackground(CodeToken.YAML_BACKGROUND.COLOR);
 
-		for (String line : text.split("\\n")) {
-			Matcher matcher = CodeParserYaml.PATTERN.matcher(line);
-			if (matcher.find()) {
-				if (matcher.group(1) != null) { // Parameter
-					addInline(matcher.group(1)).setColor(CodeToken.YAML_ATTR.COLOR);
-					addText(":");
-				}
-				if (matcher.group(2) != null) { // Value
-					addInline(matcher.group(2)).setColor(CodeToken.YAML_VALUE.COLOR);
-				}
+    for (String line : text.split("\\n")) {
+      Matcher matcher = CodeParserYaml.PATTERN.matcher(line);
+      if (matcher.find()) {
+        if (matcher.group(1) != null) { // Parameter
+          addInline(matcher.group(1)).setColor(CodeToken.YAML_ATTR.COLOR);
+          addText(":");
+        }
+        if (matcher.group(2) != null) { // Value
+          addInline(matcher.group(2)).setColor(CodeToken.YAML_VALUE.COLOR);
+        }
 
-				if (matcher.group(3) != null) { // Comment
-					addInline(line).setItalic().setColor(CodeToken.YAML_COMMENT.COLOR);
-				}
-			} else {
-				addText(line);
-			}
-			addText("\n");
-		}
-	}
+        if (matcher.group(3) != null) { // Comment
+          addInline(line).setItalic().setColor(CodeToken.YAML_COMMENT.COLOR);
+        }
+      } else {
+        addText(line);
+      }
+      addText("\n");
+    }
+  }
 }

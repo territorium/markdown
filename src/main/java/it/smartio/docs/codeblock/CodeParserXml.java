@@ -26,50 +26,50 @@ import it.smartio.docs.builder.SectionBuilder;
  */
 class CodeParserXml extends CodeParserDefault {
 
-	private static final String PATTERN_TEXT = "(<?xml .+?>)|(<\\w+|\\s*/?>|</\\w+>)|([^\\s]+=)(\"[^\"]+\")";
-	private static final Pattern PATTERN = Pattern.compile(CodeParserXml.PATTERN_TEXT,
-			Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+  private static final String  PATTERN_TEXT = "(<?xml .+?>)|(<\\w+|\\s*/?>|</\\w+>)|([^\\s]+=)(\"[^\"]+\")";
+  private static final Pattern PATTERN      =
+      Pattern.compile(CodeParserXml.PATTERN_TEXT, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
-	/**
-	 * Constructs an instance of {@link CodeParserIni}.
-	 *
-	 * @param builder
-	 */
-	public CodeParserXml(SectionBuilder builder) {
-		super(builder);
-	}
+  /**
+   * Constructs an instance of {@link CodeParserIni}.
+   *
+   * @param builder
+   */
+  public CodeParserXml(SectionBuilder builder) {
+    super(builder);
+  }
 
-	@Override
-	public void parse(String text) {
-		int index = 0;
-		Matcher matcher = CodeParserXml.PATTERN.matcher(text);
-		while (matcher.find()) {
-			if (matcher.group(1) != null) { // Comment
-				addInline("<?" + matcher.group(1)).setItalic().setColor(CodeToken.COMMENT.COLOR);
-				index = matcher.end(1);
-			}
+  @Override
+  public void parse(String text) {
+    int index = 0;
+    Matcher matcher = CodeParserXml.PATTERN.matcher(text);
+    while (matcher.find()) {
+      if (matcher.group(1) != null) { // Comment
+        addInline("<?" + matcher.group(1)).setItalic().setColor(CodeToken.COMMENT.COLOR);
+        index = matcher.end(1);
+      }
 
-			if (matcher.group(2) != null) {
-				if (matcher.start(2) > index) {
-					addInline(text.substring(index, matcher.start(2))).setBold().setColor(CodeToken.TEXT.COLOR);
-				}
-				addInline(matcher.group(2)).setBold().setColor(CodeToken.KEYWORD.COLOR);
-				index = matcher.end(2);
-			}
+      if (matcher.group(2) != null) {
+        if (matcher.start(2) > index) {
+          addInline(text.substring(index, matcher.start(2))).setBold().setColor(CodeToken.TEXT.COLOR);
+        }
+        addInline(matcher.group(2)).setBold().setColor(CodeToken.KEYWORD.COLOR);
+        index = matcher.end(2);
+      }
 
-			if (matcher.group(3) != null) {
-				if (matcher.start(3) > index) {
-					addInline(text.substring(index, matcher.start(3))).setBold().setColor(CodeToken.TEXT.COLOR);
-				}
+      if (matcher.group(3) != null) {
+        if (matcher.start(3) > index) {
+          addInline(text.substring(index, matcher.start(3))).setBold().setColor(CodeToken.TEXT.COLOR);
+        }
 
-				addInline(matcher.group(3)).setBold().setColor(CodeToken.PARAMETER.COLOR);
-				addInline(matcher.group(4)).setBold().setColor(CodeToken.VALUE.COLOR);
-				index = matcher.end(4);
-			}
-		}
+        addInline(matcher.group(3)).setBold().setColor(CodeToken.PARAMETER.COLOR);
+        addInline(matcher.group(4)).setBold().setColor(CodeToken.VALUE.COLOR);
+        index = matcher.end(4);
+      }
+    }
 
-		if (index < text.length()) { // Text
-			addInline(text.substring(index)).setBold().setColor(CodeToken.TEXT.COLOR);
-		}
-	}
+    if (index < text.length()) { // Text
+      addInline(text.substring(index)).setBold().setColor(CodeToken.TEXT.COLOR);
+    }
+  }
 }

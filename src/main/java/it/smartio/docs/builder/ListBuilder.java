@@ -22,26 +22,26 @@ import it.smartio.docs.List;
  */
 public class ListBuilder extends ContentBuilder implements List {
 
-	private final boolean isOrdered;
+  private final boolean isOrdered;
 
-	/**
-	 * Constructs an instance of {@link ListBuilder}.
-	 */
-	public ListBuilder() {
-		this(false);
-	}
+  /**
+   * Constructs an instance of {@link ListBuilder}.
+   */
+  public ListBuilder() {
+    this(false);
+  }
 
-	/**
-	 * Constructs an instance of {@link ListBuilder}.
-	 *
-	 * @param type
-	 */
-	public ListBuilder(boolean isOrdered) {
-		this.isOrdered = isOrdered;
-	}
+  /**
+   * Constructs an instance of {@link ListBuilder}.
+   *
+   * @param type
+   */
+  public ListBuilder(boolean isOrdered) {
+    this.isOrdered = isOrdered;
+  }
 
-	@Override
-	public final boolean isOrdered() {
-		return this.isOrdered;
-	}
+  @Override
+  public final boolean isOrdered() {
+    return this.isOrdered;
+  }
 }

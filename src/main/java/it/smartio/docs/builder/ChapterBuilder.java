@@ -20,26 +20,26 @@ package it.smartio.docs.builder;
  */
 class ChapterBuilder extends PageBuilder {
 
-	private final int offset;
-	private int sectionOffset;
+  private final int offset;
+  private int       sectionOffset;
 
-	/**
-	 * Constructs an instance of {@link ChapterBuilder}.
-	 *
-	 */
-	public ChapterBuilder(PageBuilder parent, int level, int offset) {
-		super(level, parent);
-		this.offset = offset;
-		this.sectionOffset = 0;
-	}
+  /**
+   * Constructs an instance of {@link ChapterBuilder}.
+   *
+   */
+  public ChapterBuilder(PageBuilder parent, int level, int offset) {
+    super(level, parent);
+    this.offset = offset;
+    this.sectionOffset = 0;
+  }
 
-	@Override
-	public final int getOffset() {
-		return this.offset;
-	}
+  @Override
+  public final int getOffset() {
+    return this.offset;
+  }
 
-	@Override
-	public final PageBuilder addSection() {
-		return add(new ChapterBuilder(this, getLevel() + 1, this.sectionOffset++));
-	}
+  @Override
+  public final PageBuilder addSection() {
+    return add(new ChapterBuilder(this, getLevel() + 1, this.sectionOffset++));
+  }
 }

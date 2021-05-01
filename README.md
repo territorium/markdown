@@ -1,22 +1,20 @@
 # Markdown for PDF generation
 
-The plugin supports the creation of beautiful PDF's from markdown documents.
-
-## Plugin usage
-
-Create a simple gradle project with the Gradle Wrapper and configure *build.gradle* and *settings.gradle*.
+The plugin supports the creation of beautiful PDF's from markdown. Create a simple gradle project with the Gradle Wrapper and configure *build.gradle* and *settings.gradle*.
 
 The *build.gradle* applies the markdown plugin with the configuration parameters.
 
 ~~~
 plugins {
-  id 'it.smartio.gradle.markdown' version '0.1.4'
+  id 'it.smartio.gradle.markdown' version '0.1.8'
 }
 
 
 markdown.config = 'template.ui.xml'
 markdown.source = 'manual'
 ~~~
+
+The latest version can always be loaded from [Gradle Plugin repository](https://plugins.gradle.org/plugin/it.smartio.gradle.markdown).
 
 The optional *markdown.config* parameter defines the configuration file. If the parameter is omitted an internal default template is used. The *markdown.source* parameter defines a directory of where the root markdown files are located, or it defines a single markdown file that should be converted to PDF.
 
@@ -25,116 +23,31 @@ The *settings.gradle* optionally defines the plugin repository.
 ~~~
 pluginManagement {
   repositories {
-    mavenLocal()
     gradlePluginPortal()
   }
 }
 ~~~
 
-The *markdown.config* parameter is optional. By default a standard template / configuration is applied. If defined it allows to define the layout of the single pages and the used fonts.
-
-~~~
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE template>
-<template width="210mm" height="297mm">
-	<font name="TEXT">
-		<font-metric file="fonts/RobotoCondensed-Regular.ttf" />
-		<font-metric file="fonts/RobotoCondensed-Bold.ttf" bold="true" />
-		<font-metric file="fonts/RobotoCondensed-Italic.ttf" italic="true" />
-		<font-metric file="fonts/RobotoCondensed-BoldItalic.ttf" bold="true" italic="true" />
-	</font>
-	<font name="MONO">
-		<font-metric file="fonts/UbuntuMono-Regular.ttf" />
-		<font-metric file="fonts/UbuntuMono-Bold.ttf" bold="true" />
-		<font-metric file="fonts/UbuntuMono-Italic.ttf" italic="true" />
-		<font-metric file="fonts/UbuntuMono-BoldItalic.ttf" bold="true" italic="true" />
-	</font>
-	<font name="SYMBOLS">
-		<font-metric file="fonts/MaterialIcons-Regular.ttf" />
-	</font>
-	
-	<page name="cover">
-		<region-body top="210mm" left="2.7in" right="0" bottom="70mm"/>
-		<region-north extent="297mm" precedence="true" align="before" background=":background.jpg">
-			<static top="187mm" left="2.5in" right="0" bottom="70mm" background="#469ba5">
-				<panel top="0" left="0.2in" right="0.2in" bottom="0">
-					<text color="white" font-size="48pt" font-weight="bold" line-height="1.4em">User Manual</text>
-				</panel>
-			</static>
-		</region-north>
-	</page>
-	<page name="title">
-		<region-body top="7.5in" left="1in" right="1in" bottom="1in" column-count="2" column-gap="12pt" />
-		<region-north extent="297mm" precedence="true" align="before" background="#469ba5">
-			<static top="1in" left="1in" right="1in" bottom="1in">
-				<text color="#4da8b3" font-size="256pt" font-weight="bold">{{$CHAPTER}}</text>
-			</static>
-			<static top="140mm" left="1in" right="1in" bottom="1in">
-				<text color="#eeeeee" font-size="42pt" font-weight="bold">{{$TITLE}}</text>
-			</static>
-		</region-north>
-	</page>
-	<page name="odd">
-		<region-body top="0.75in" left="0.75in" right="0.75in" bottom="0.75in" />
-		<region-north extent="8mm" precedence="false" border="0" padding="0" orientation="90">
-			<static top="0mm" left="130mm" right="10mm" bottom="0mm" background="#469ba5">
-				<text color="#ffffff" font-size="13pt" text-align="center" top="0.2em">{{$TITLE}}</text>
-			</static>
-		</region-north>
-		<region-south extent="10mm" precedence="true" align="after">
-			<static top="0mm" left="190mm" right="10mm" bottom="0mm" background="#469ba5">
-				<text color="#ffffff" text-align="center" top="0.5em">{{$PAGE_NUMBER}}</text>
-			</static>
-		</region-south>
-	</page>
-	<page name="even">
-		<region-body top="0.75in" left="0.75in" right="0.75in" bottom="0.75in" />
-		<region-north extent="8mm" precedence="false" border="0" padding="0" orientation="90">
-			<static top="0mm" left="10mm" right="130mm" bottom="0mm" background="#469ba5">
-				<text color="#ffffff" font-size="13pt" text-align="center" top="0.2em">{{$TITLE}}</text>
-			</static>
-		</region-north>
-		<region-south extent="10mm" precedence="true" align="after">
-			<static top="0mm" left="10mm" right="190mm" bottom="0mm" background="#469ba5">
-				<text color="#ffffff" text-align="center" top="0.5em">{{$PAGE_NUMBER}}</text>
-			</static>
-		</region-south>
-		<region-east extent="0" precedence="false" border="0" padding="0" orientation="90" />
-	</page>
-	<page name="blank">
-		<region-body />
-	</page>
-</template>
-~~~
-
-Currently the renderer support 3 different fonts:
-
-- TEXT: Defines the font for the default text.
-- MONO: Defines the font for the code snippets.
-- SYMBOLS: Defines the symbol font, used for font icons.
+The *markdown.config* parameter is optional and allows custom configuration of the layout of the rendered PDF. By default a standard template is applied. 
 
 
-## Supported syntaxes
+## Common mark
 
 [Markdown][1] is a plain text format for writing structured documents, based on formatting conventions from email and usenet. *Markdown* is a simple way to format text that looks great on any device. It doesn’t do anything fancy like change the font size, color, or type — just the essentials, using keyboard symbols you already know.
 
 There are different implementations of Markdown, we use the [Common Markdown][2] is intended to be as easy-to-read and easy-to-write as is feasible.
 
-Readability, however, is emphasized above all else. A Markdown-formatted documen` should be publishable as-is, as plain text, without looking like it’s been marked up with tags or formatting instructions. While Markdown’s syntax has been influenced by several existing text-to-HTML filters — including Setext, atx, Textile, reStructuredText, Grutatext, and EtText — the single biggest source of inspiration for Markdown’s syntax is the format of plain text email.
+Readability, however, is emphasized above all else. A Markdown-formatted document should be publishable as-is, as plain text, without looking like it’s been marked up with tags or formatting instructions. While Markdown’s syntax has been influenced by several existing text-to-HTML filters — including Setext, atx, Textile, reStructuredText, Grutatext, and EtText — the single biggest source of inspiration for Markdown’s syntax is the format of plain text email.
 
-To this end, Markdown’s syntax is comprised entirely of punctuation characters, which punctuation characters have been carefully chosen so as to look like what they mean. E.g., asterisks around a word actually look like *emphasis*. Markdown lists look like, well, lists. Even blockquotes look like quoted passages of text, assuming you’ve ever used email.
+To this end, Markdown's syntax is comprised entirely of punctuation characters, which punctuation characters have been carefully chosen so as to look like what they mean. E.g., asterisks around a word actually look like *emphasis*. Markdown lists look like, well, lists. Even blockquotes look like quoted passages of text, assuming you’ve ever used email.
+
+Common mark is a strongly defined, highly compatible specification of Markdown.
 
 For details look the [Common Mark Manual](https://commonmark.org/help/). There are many ways to write markdown; a simple offline editor is [Typora][3]. 
 
 [1]: https://en.wikipedia.org/wiki/Markdown "Markdown is a lightweight markup language for creating formatted text using a plain-text editor."
 [2]: https://spec.commonmark.org/ "A strongly defined, highly compatible specification of Markdown"
 [3]: https://typora.io/ "A truly minimal Mardkown editor"
-
-
-## Common Mark
-
-A strongly defined, highly compatible specification of Markdown
-
 
 
 ### Headings
@@ -147,8 +60,7 @@ The more #, the smaller the header.
 	### Sub Chapter 
 
 
-!w Remember: Each *markdown* file should be handled as independent manual. Including a file into another it becomes automatically a child chapter. So use the highest heading in each file.
-
+!w Remember: Each *markdown* file should be handled as independent document. Including a file into another it becomes automatically a child chapter. So use the highest heading in each file.
 
 
 ### Paragraphs
@@ -219,7 +131,7 @@ Blockquotes can be nested, and can also contain other formatting.
 
 To create bold or italic, wrap with asterisks \* or underscores \_. To avoid creating bold or italic, place a backslash in front \\\* or \\\_. For *italics* a single asteriks or underscore is used, for **bold** 2 are used.  Using 3 allows to create a ***bold and italic*** text.
 
-The smart.IO implementation supports an additional syntax for ____underline____ with 4 underscores  and ~~strikethrough~~ with 2 tilde.
+Our implementation supports an additional syntax for ____underline____ with 4 underscores  and ~~strikethrough~~ with 2 tilde.
 
 
 	*italic* _italic_
@@ -312,7 +224,7 @@ Advanced features that build on the basic Markdown syntax.
 
 ### Multi-Files
 
-The smart.IO *Markdown* parser supports organizing the documentation in multiple files. Each file can be included by a simple link with the relative path. The documentation generator will merge all files into a single *markdown* source. Each file should be designed as independent file, the generator takes care about building the correct structure of chapters.
+The *Markdown* parser supports organizing the documentation in multiple files. Each file can be included by a simple link with the relative path. The documentation generator will merge all files into a single *markdown* source. Each file should be designed as independent file, the generator takes care about building the correct structure of chapters.
 
 	[Title](local_path/to_file.md)
 
@@ -335,7 +247,7 @@ Markdown allows to link to internal headers using as link the header name in low
 	
 	### Header of Document
 
-The smart.IO framework changes to the local references automatically, that you can directly use the header. Nevertheless you should avoid headers with special characters.
+The renderer changes to the local references automatically, that you can directly use the header. Nevertheless you should avoid headers with special characters.
 
 	[text](#Header of Document)
 	
@@ -357,14 +269,14 @@ To add a table, use three or more hyphens (---) to create each column’s header
 | Auto | Center | Left | Right |
 
 
-Sizing of of the single table columns is not supported by markdown. In smart.IO we introduced the definition of the column width, using the number of hyphens (---) in the header separator. The number of hyphens in a single column relative to the sum of all hyphens in all columns define the relative width to the whole table.
+Sizing of of the single table columns is not supported by markdown. We extended the tables and introduced the definition of the column width, using the number of hyphens (---) in the header separator. The number of hyphens in a single column relative to the sum of all hyphens in all columns define the relative width to the whole table.
 
 
 
 ### Alerts
 
 
-Alerts are a smart.IO extension to provide customizable blockquotes. 4 different kind of alerts are supported, that are rendered with a background and highlight color. The alert message have to start with **!** at the beginning of the line with a letter defining the alert message.
+Alerts are an extension to provide customizable blockquotes. 4 different kind of alerts are supported, that are rendered with a background and highlight color. The alert message have to start with **!** at the beginning of the line with a letter defining the alert message.
 
 	!n Note
 
@@ -399,7 +311,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
 
 ### Symbols
 
-The smart.IO implementation allows to define placeholders for font symbols. The symbol name must be defined between 2 @.
+Our implementation allows to define placeholders for font symbols. The symbol name must be defined between 2 @.
 
 	@web@
 
@@ -414,7 +326,7 @@ As font the [Material Icons Font][3] is used.
 
 ### Formatted Code
 
-The smart.IO implementation supports the extended syntax with 3 tilde (~), optionally to defining the the code formatter.
+The implementation supports the extended syntax with 3 tilde (~), optionally to defining the the code formatter.
 
 	~~~ini
 	[datasource.DS1]
@@ -430,3 +342,81 @@ uri    = http://localhost5000/
 
 
 The *language* attribute allows to define the formatting for a specific language. *ini*, *xml*, *json*, *java* and *cpp* are supported. Support for *rest* is missing. 
+
+
+## Custom rendering
+
+The *markdown.config* parameter allows to define a custom configuration for layouting. The implementation is still experimental; for this example without explanation will be provided yet.
+
+~~~xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE template>
+<template width="210mm" height="297mm">
+	<font name="TEXT">
+		<font-metric file="fonts/RobotoCondensed-Regular.ttf" />
+		<font-metric file="fonts/RobotoCondensed-Bold.ttf" bold="true" />
+		<font-metric file="fonts/RobotoCondensed-Italic.ttf" italic="true" />
+		<font-metric file="fonts/RobotoCondensed-BoldItalic.ttf" bold="true" italic="true" />
+	</font>
+	<font name="MONO">
+		<font-metric file="fonts/UbuntuMono-Regular.ttf" />
+		<font-metric file="fonts/UbuntuMono-Bold.ttf" bold="true" />
+		<font-metric file="fonts/UbuntuMono-Italic.ttf" italic="true" />
+		<font-metric file="fonts/UbuntuMono-BoldItalic.ttf" bold="true" italic="true" />
+	</font>
+	<font name="SYMBOLS">
+		<font-metric file="fonts/MaterialIcons-Regular.ttf" />
+	</font>
+	
+	<page name="cover" padding="210mm,0,70mm,2.7in"/>
+		<page-top extent="297mm" background=":background.jpg">
+			<panel top="187mm" left="2.5in" right="0" bottom="70mm" background="#469ba5">
+				<panel top="0" left="0.2in" right="0.2in" bottom="0">
+					<text color="white" font-size="48pt" font-weight="bold" line-height="1.4em">User Manual</text>
+				</panel>
+			</panel>
+		</page-top>
+	</page>
+	<page name="title" padding="7.5in,1in,1in,1in" column-count="2" column-gap="12pt">
+		<page-top extent="297mm" background="#469ba5">
+			<panel top="1in" left="1in" right="1in" bottom="1in">
+				<text color="#4da8b3" font-size="256pt" font-weight="bold">{{$CHAPTER}}</text>
+			</panel>
+			<panel top="140mm" left="1in" right="1in" bottom="1in">
+				<text color="#eeeeee" font-size="42pt" font-weight="bold">{{$TITLE}}</text>
+			</panel>
+		</page-top>
+	</page>
+	<page name="odd" padding="0.75in">
+		<page-top extent="8mm">
+			<panel top="0mm" left="130mm" right="10mm" bottom="0mm" background="#469ba5">
+				<text color="#ffffff" font-size="13pt" text-align="center" top="0.2em">{{$TITLE}}</text>
+			</panel>
+		</page-top>
+		<page-bottom extent="10mm">
+			<panel top="0mm" left="190mm" right="10mm" bottom="0mm" background="#469ba5">
+				<text color="#ffffff" text-align="center" top="0.5em">{{$PAGE_NUMBER}}</text>
+			</panel>
+		</page-bottom>
+	</page>
+	<page name="even" padding="0.75in">
+		<page-top extent="8mm">
+			<panel top="0mm" left="10mm" right="130mm" bottom="0mm" background="#469ba5">
+				<text color="#ffffff" font-size="13pt" text-align="center" top="0.2em">{{$TITLE}}</text>
+			</panel>
+		</page-top>
+		<page-bottom extent="10mm">
+			<panel top="0mm" left="10mm" right="190mm" bottom="0mm" background="#469ba5">
+				<text color="#ffffff" text-align="center" top="0.5em">{{$PAGE_NUMBER}}</text>
+			</panel>
+		</page-bottom>
+	</page>
+	<page name="blank" />
+</template>
+~~~
+
+Currently the renderer support 3 different fonts:
+
+- TEXT: Defines the font for the default text.
+- MONO: Defines the font for the code snippets.
+- SYMBOLS: Defines the symbol font, used for font icons.

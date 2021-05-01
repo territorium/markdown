@@ -20,5 +20,5 @@ package it.smartio.docs.builder;
  */
 public interface CodeParser {
 
-	void parse(String text);
+  void parse(String text);
 }

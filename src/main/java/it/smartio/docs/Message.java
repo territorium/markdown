@@ -20,14 +20,17 @@ package it.smartio.docs;
  */
 public interface Message extends Node {
 
-	enum Style {
-		INFO, SUCCESS, WARNING, ERROR;
-	}
+  enum Style {
+    INFO,
+    SUCCESS,
+    WARNING,
+    ERROR;
+  }
 
-	Style getStyle();
+  Style getStyle();
 
-	@Override
-	default <R> void accept(NodeVisitor<R> visitor, R data) {
-		visitor.visit(this, data);
-	}
+  @Override
+  default <R> void accept(NodeVisitor<R> visitor, R data) {
+    visitor.visit(this, data);
+  }
 }

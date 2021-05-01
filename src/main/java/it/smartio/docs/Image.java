@@ -20,18 +20,18 @@ package it.smartio.docs;
  */
 public interface Image extends Node {
 
-	String getUrl();
+  String getUrl();
 
-	String getText();
+  String getText();
 
-	String getAlign();
+  String getAlign();
 
-	String getWidth();
+  String getWidth();
 
-	String getHeight();
+  String getHeight();
 
-	@Override
-	default <R> void accept(NodeVisitor<R> visitor, R data) {
-		visitor.visit(this, data);
-	}
+  @Override
+  default <R> void accept(NodeVisitor<R> visitor, R data) {
+    visitor.visit(this, data);
+  }
 }

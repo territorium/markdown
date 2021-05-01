@@ -18,8 +18,7 @@ package it.smartio.docs.markdown.tables;
 import org.commonmark.node.CustomBlock;
 
 /**
- * Table block containing a {@link TableHead} and optionally a
- * {@link TableBody}.
+ * Table block containing a {@link TableHead} and optionally a {@link TableBody}.
  */
 public class Table extends CustomBlock {
 }

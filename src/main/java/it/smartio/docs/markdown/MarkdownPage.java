@@ -43,189 +43,189 @@ import it.smartio.docs.markdown.tables.Table;
  */
 public class MarkdownPage extends MarkdownVisitor {
 
-	private final PageBuilder content;
+  private final PageBuilder content;
 
-	/**
-	 * Constructs an instance of {@link MarkdownPage}.
-	 *
-	 * @param content
-	 */
-	public MarkdownPage(PageBuilder content) {
-		this.content = content;
-	}
+  /**
+   * Constructs an instance of {@link MarkdownPage}.
+   *
+   * @param content
+   */
+  public MarkdownPage(PageBuilder content) {
+    this.content = content;
+  }
 
-	/**
-	 * Get the current {@link ContentBuilder} node.
-	 */
-	protected PageBuilder getContent() {
-		return this.content;
-	}
+  /**
+   * Get the current {@link ContentBuilder} node.
+   */
+  protected PageBuilder getContent() {
+    return this.content;
+  }
 
-	/**
-	 * Visit the {@link SoftLineBreak}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(SoftLineBreak node) {
-		getContent().addBreak();
-	}
+  /**
+   * Visit the {@link SoftLineBreak}.
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(SoftLineBreak node) {
+    getContent().addBreak();
+  }
 
-	/**
-	 * Visit the {@link ThematicBreak}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public void visit(ThematicBreak node) {
-		getContent().addLineBreak();
-	}
+  /**
+   * Visit the {@link ThematicBreak}.
+   *
+   * @param node
+   */
+  @Override
+  public void visit(ThematicBreak node) {
+    getContent().addLineBreak();
+  }
 
-	/**
-	 * Visit the {@link Paragraph}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(Paragraph node) {
-		ContentBuilder content = getContent().addParagraph();
-		MarkdownBuilder builder = new MarkdownBuilder(content, 0);
-		builder.visitChildren(node);
-	}
+  /**
+   * Visit the {@link Paragraph}.
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(Paragraph node) {
+    ContentBuilder content = getContent().addParagraph();
+    MarkdownBuilder builder = new MarkdownBuilder(content, 0);
+    builder.visitChildren(node);
+  }
 
-	/**
-	 * Process the {@link BlockQuote}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(BlockQuote node) {
-		ParagraphBuilder content = getContent().addParagraph();
-		content.setIntent(1);
-		MarkdownBuilder builder = new MarkdownBuilder(content, 0);
-		builder.visitChildren(node);
-	}
+  /**
+   * Process the {@link BlockQuote}.
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(BlockQuote node) {
+    ParagraphBuilder content = getContent().addParagraph();
+    content.setIntent(1);
+    MarkdownBuilder builder = new MarkdownBuilder(content, 0);
+    builder.visitChildren(node);
+  }
 
-	/**
-	 * Visit the {@link Image}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(Image node) {
-		String title = null;
-		String align = null;
-		String width = null;
-		String height = null;
+  /**
+   * Visit the {@link Image}.
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(Image node) {
+    String title = null;
+    String align = null;
+    String width = null;
+    String height = null;
 
-		if (node.getFirstChild() instanceof Text) {
-			Text text = (Text) node.getFirstChild();
-			title = text.getLiteral();
-		}
-		if (node.getLastChild() instanceof ImageAttributes) {
-			ImageAttributes attrs = (ImageAttributes) node.getLastChild();
-			align = attrs.getAttributes().get("align");
-			width = attrs.getAttributes().get("width");
-			height = attrs.getAttributes().get("height");
-		}
-		getContent().addImage(node.getDestination(), title, align, width, height);
-	}
+    if (node.getFirstChild() instanceof Text) {
+      Text text = (Text) node.getFirstChild();
+      title = text.getLiteral();
+    }
+    if (node.getLastChild() instanceof ImageAttributes) {
+      ImageAttributes attrs = (ImageAttributes) node.getLastChild();
+      align = attrs.getAttributes().get("align");
+      width = attrs.getAttributes().get("width");
+      height = attrs.getAttributes().get("height");
+    }
+    getContent().addImage(node.getDestination(), title, align, width, height);
+  }
 
-	/**
-	 * Visit the {@link LinkReferenceDefinition}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(LinkReferenceDefinition node) {
-		visitChildren(node);
-	}
+  /**
+   * Visit the {@link LinkReferenceDefinition}.
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(LinkReferenceDefinition node) {
+    visitChildren(node);
+  }
 
-	/**
-	 * Visit the {@link FencedCodeBlock}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(FencedCodeBlock node) {
-		CodeFactory.of(node.getInfo(), getContent()).parse(node.getLiteral());
-	}
+  /**
+   * Visit the {@link FencedCodeBlock}.
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(FencedCodeBlock node) {
+    CodeFactory.of(node.getInfo(), getContent()).parse(node.getLiteral());
+  }
 
-	/**
-	 * Process the {@link BulletList}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(BulletList node) {
-		ListBuilder list = getContent().addList();
-		MarkdownBuilder builder = new MarkdownBuilder(list, 0);
-		builder.visitChildren(node);
-	}
+  /**
+   * Process the {@link BulletList}.
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(BulletList node) {
+    ListBuilder list = getContent().addList();
+    MarkdownBuilder builder = new MarkdownBuilder(list, 0);
+    builder.visitChildren(node);
+  }
 
-	/**
-	 * Process the {@link OrderedList}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(OrderedList node) {
-		ListBuilder list = getContent().addOrderedList();
-		MarkdownBuilder builder = new MarkdownBuilder(list, 0);
-		builder.visitChildren(node);
-	}
+  /**
+   * Process the {@link OrderedList}.
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(OrderedList node) {
+    ListBuilder list = getContent().addOrderedList();
+    MarkdownBuilder builder = new MarkdownBuilder(list, 0);
+    builder.visitChildren(node);
+  }
 
-	/**
-	 * Process the {@link IndentedCodeBlock}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(IndentedCodeBlock node) {
-		ContentBuilder code = getContent().addCode();
-		code.addContent(node.getLiteral());
-	}
+  /**
+   * Process the {@link IndentedCodeBlock}.
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(IndentedCodeBlock node) {
+    ContentBuilder code = getContent().addCode();
+    code.addContent(node.getLiteral());
+  }
 
-	/**
-	 * Process the {@link CustomBlock}.
-	 *
-	 * @param node
-	 */
-	@Override
-	public final void visit(CustomBlock node) {
-		if (node instanceof Table) {
-			PageBuilder page = getContent();
-			MarkdownTable builder = new MarkdownTable(page.addTable());
-			builder.visitChildren(node);
-		} else if (node instanceof AlertBlock) {
-			PageBuilder page = getContent();
-			ContentBuilder content = page.addNotification(MarkdownPage.getNotification(node));
+  /**
+   * Process the {@link CustomBlock}.
+   *
+   * @param node
+   */
+  @Override
+  public final void visit(CustomBlock node) {
+    if (node instanceof Table) {
+      PageBuilder page = getContent();
+      MarkdownTable builder = new MarkdownTable(page.addTable());
+      builder.visitChildren(node);
+    } else if (node instanceof AlertBlock) {
+      PageBuilder page = getContent();
+      ContentBuilder content = page.addNotification(MarkdownPage.getNotification(node));
 
-			MarkdownBuilder builder = new MarkdownBuilder(content, 0);
-			builder.visitChildren(node);
-		} else {
-			super.visit(node);
-		}
-	}
+      MarkdownBuilder builder = new MarkdownBuilder(content, 0);
+      builder.visitChildren(node);
+    } else {
+      super.visit(node);
+    }
+  }
 
-	/**
-	 * Get the {@link AlertBlock}.
-	 *
-	 * @param block
-	 */
-	protected static Style getNotification(CustomBlock node) {
-		AlertBlock block = (AlertBlock) node;
-		switch (block.getType()) {
-		case NOTE:
-			return Style.INFO;
-		case SUCCESS:
-			return Style.SUCCESS;
-		case WARNING:
-			return Style.WARNING;
-		case ERROR:
-			return Style.ERROR;
-		default:
-			return Style.INFO;
-		}
-	}
+  /**
+   * Get the {@link AlertBlock}.
+   *
+   * @param block
+   */
+  protected static Style getNotification(CustomBlock node) {
+    AlertBlock block = (AlertBlock) node;
+    switch (block.getType()) {
+      case NOTE:
+        return Style.INFO;
+      case SUCCESS:
+        return Style.SUCCESS;
+      case WARNING:
+        return Style.WARNING;
+      case ERROR:
+        return Style.ERROR;
+      default:
+        return Style.INFO;
+    }
+  }
 }
