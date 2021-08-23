@@ -49,6 +49,9 @@ public class CodeFactory {
       case "cpp":
       case "c++":
         return new CodeParserCpp(builder);
+      case "oql":
+      case "sql":
+        return new CodeParserSql(builder);
 
       case "xml":
         return new CodeParserXml(builder);

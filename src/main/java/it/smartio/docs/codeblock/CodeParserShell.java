@@ -58,6 +58,9 @@ class CodeParserShell extends CodeParserDefault {
           addInline(matcher.group(2)).setBold().setColor(CodeToken.PARAMETER.COLOR);
 
           String arguments = matcher.group(3);
+          if (arguments == null)
+            continue;
+          
           Matcher args = CodeParserShell.PATTERN_ARGS.matcher(arguments);
           while (args.find()) {// Arguments
             if (args.group(1) != null) {

@@ -15,6 +15,7 @@
 
 package it.smartio.docs.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -85,10 +86,10 @@ public abstract class DataUri {
    *
    * @param resource
    */
-  public static final String loadImage(String resource) {
+  public static String loadImage(String resource) {
     String contentType = resource.toLowerCase().endsWith(".png") ? "png" : "jpeg";
     try (InputStream stream = DataUri.getInputStream(resource)) {
-      byte[] bytes = stream.readAllBytes();
+      byte[] bytes = readAllBytes(stream);
       String base64 = Base64.getEncoder().encodeToString(bytes);
       return String.format("data:image/%s;base64,%s", contentType, base64);
     } catch (IOException e) {}
@@ -100,13 +101,30 @@ public abstract class DataUri {
    *
    * @param uri
    */
-  public static final String loadImage(URI uri) {
+  public static String loadImage(URI uri) {
     String contentType = uri.toString().toLowerCase().endsWith(".png") ? "png" : "jpeg";
     try (InputStream stream = uri.toURL().openStream()) {
-      byte[] bytes = stream.readAllBytes();
+      byte[] bytes = readAllBytes(stream);
       String base64 = Base64.getEncoder().encodeToString(bytes);
       return String.format("data:image/%s;base64,%s", contentType, base64);
     } catch (IOException e) {}
     return DataUri.EMPTY;
+  }
+
+  /**
+   * Read all bytes from an {@link InputStream}.
+   *
+   * @param stream
+   */
+  private static byte[] readAllBytes(InputStream stream) throws IOException {
+    try (ByteArrayOutputStream byteArray = new ByteArrayOutputStream()) {
+      int next = stream.read();
+      while (next > -1) {
+        byteArray.write(next);
+        next = stream.read();
+      }
+      byteArray.flush();
+      return byteArray.toByteArray();
+    }
   }
 }

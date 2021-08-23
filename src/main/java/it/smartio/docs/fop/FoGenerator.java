@@ -194,7 +194,7 @@ public class FoGenerator {
 
     StringWriter writer = new StringWriter();
     FoGenerator.writeFo(book, config, writer);
-    return new ByteArrayInputStream(writer.toString().getBytes());
+    return new ByteArrayInputStream(writer.toString().getBytes("UTF-8"));
   }
 
   /**

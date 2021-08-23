@@ -11,7 +11,7 @@ repositories {
 }
 
 
-version = '0.1.13'
+version = '0.1.14'
 group	= 'it.smartio'
 
 
@@ -22,7 +22,7 @@ dependencies {
   // https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop
   implementation group: 'org.apache.xmlgraphics', name: 'fop', version: '2.6'
   // https://mvnrepository.com/artifact/org.commonmark/commonmark
-  implementation group: 'org.commonmark', name: 'commonmark', version: '0.17.1'
+  implementation group: 'org.commonmark', name: 'commonmark', version: '0.18.0'
 }
 
 
@@ -59,7 +59,7 @@ pluginBundle {
       displayName = 'Markdown documenter'
       description = 'Glade plugin converting markdown into PDF'
       tags = ['markdown', 'pdf', 'documentation']
-      version = '0.1.13'
+      version = '0.1.14'
     }
   }
 }
