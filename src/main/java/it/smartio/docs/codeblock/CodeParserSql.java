@@ -28,11 +28,13 @@ import it.smartio.docs.builder.SectionBuilder;
  */
 class CodeParserSql extends CodeParserDefault {
 
-  private static final List<String> KEYWORDS = Arrays.asList("SELECT", "FROM", "WHERE", "DISTINCT", "ON", "AS", "USING",
-      "WHERE", "GROUP", "BY", "ORDER", "LIMIT", "OFFSET", "CREATE", "INSERT", "UPDATE", "DELETE", "INTO", "SET",
-      "VALUES", "IMPORT", "EXPORT", "WITH", "DPI", "SIZE", "ANGLE", "LAYER", "SYNC", "BINARY", "SCHEMA");
+  private static final List<String> KEYWORDS =
+      Arrays.asList("SELECT", "FROM", "WHERE", "DISTINCT", "ON", "AS", "USING", "WHERE", "GROUP", "BY", "ORDER",
+          "LIMIT", "OFFSET", "CREATE", "INSERT", "UPDATE", "DELETE", "INTO", "SET", "VALUES", "IMPORT", "EXPORT",
+          "WITH", "DPI", "SIZE", "ANGLE", "LAYER", "SYNC", "BINARY", "SCHEMA", "UNCAST", "IS", "NOT", "NULL");
 
-  private static final Pattern      LANGUAGE =
+
+  private static final Pattern LANGUAGE =
       Pattern.compile(String.format("(%s)", String.join("|", CodeParserSql.KEYWORDS)), Pattern.CASE_INSENSITIVE);
 
   /**
@@ -61,7 +63,6 @@ class CodeParserSql extends CodeParserDefault {
         }
         addText(line.substring(offset) + "\n");
       }
-
     }
   }
 }

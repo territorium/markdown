@@ -92,8 +92,9 @@ class FoRenderer implements Renderer, NodeVisitor<FoContext> {
     String title = PageUtil.encode(node.getTitle().trim());
 
     // Renders the Bookmark
+    FoRendererBookmark rendererBookmark = new FoRendererBookmark(this.config);
     FoBookmark bookmark = this.config.addBookmark(FoRenderer.BOOK_ID).setTitle(title);
-    node.nodes().forEach(n -> n.accept(new FoRendererBookmark(), bookmark));
+    node.nodes().forEach(n -> n.accept(rendererBookmark, bookmark));
 
     // Renders the cover page
     Properties properties = new Properties();
@@ -107,8 +108,8 @@ class FoRenderer implements Renderer, NodeVisitor<FoContext> {
     node.nodes().forEach(c -> c.accept(this, this.config));
     this.config.pop();
 
-    Renderer renderer = new FoRendererToC(this.config, "Table of Contents");
-    renderer.render(node); // Table of Content
+    Renderer rendererToc = new FoRendererToC(this.config, "Table of Contents");
+    rendererToc.render(node); // Table of Content
 
     getWriter().write(this.config.toString());
   }

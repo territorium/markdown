@@ -15,10 +15,15 @@
 
 package it.smartio.docs.markdown;
 
+import org.commonmark.Extension;
+import org.commonmark.parser.Parser;
+
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +31,6 @@ import java.util.Properties;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.commonmark.Extension;
-import org.commonmark.parser.Parser;
 
 import it.smartio.docs.Book;
 import it.smartio.docs.builder.BookBuilder;
@@ -62,7 +64,7 @@ public class MarkdownReader {
       Pattern.compile("^\\[(\\w+)\\]:\\s([^\\s]+)(\\s\".+\")?", Pattern.CASE_INSENSITIVE);
   // Footnote reference: [TEXT]?[ID]
   private static final Pattern FOOTNOTE_REF =
-      Pattern.compile("(?:\\[([^\\]]+)\\])\\[(\\w+)\\]", Pattern.CASE_INSENSITIVE);
+      Pattern.compile("(?:\\[([^\\]]*)\\])\\[(\\w+)\\]", Pattern.CASE_INSENSITIVE);
 
   // Environment variables: ${ENVIRONMENT_VARIABLE}
   private static final Pattern PARAMETER = Pattern.compile("\\$\\{([^}]+)}", Pattern.CASE_INSENSITIVE);
@@ -220,7 +222,11 @@ public class MarkdownReader {
     try (PrintWriter writer = new PrintWriter(text)) {
       merge(source, "", writer);
     }
-
+    
+    try(Writer writer = new FileWriter("/tmp/test.md")) {
+      writer.write(text.toString());
+    }
+    
     BookBuilder book = new BookBuilder();
     Parser parser = Parser.builder().extensions(MarkdownReader.EXTENSIONS).build();
     parser.parse(text.toString()).accept(new MarkdownParser(book));

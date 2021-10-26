@@ -11,7 +11,7 @@ repositories {
 }
 
 
-version = '0.1.14'
+version = '0.1.16'
 group	= 'it.smartio'
 
 
@@ -59,7 +59,7 @@ pluginBundle {
       displayName = 'Markdown documenter'
       description = 'Glade plugin converting markdown into PDF'
       tags = ['markdown', 'pdf', 'documentation']
-      version = '0.1.14'
+      version = '0.1.16'
     }
   }
 }
