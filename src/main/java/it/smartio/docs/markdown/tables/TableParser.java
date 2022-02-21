@@ -126,7 +126,8 @@ class TableParser extends AbstractBlockParser {
     }
 
     SourceLines lines = new SourceLines();
-    lines.addLine(SourceLine.of(cell.trim(), null));
+    // Allow new lines
+    lines.addLine(SourceLine.of(cell.trim().replace("\\\\", "\n"), null));
     inlineParser.parse(lines, tableCell);
 
     return tableCell;
