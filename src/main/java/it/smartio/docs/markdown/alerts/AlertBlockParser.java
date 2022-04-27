@@ -15,8 +15,6 @@
 
 package it.smartio.docs.markdown.alerts;
 
-import java.util.regex.Matcher;
-
 import org.commonmark.node.Block;
 import org.commonmark.parser.block.AbstractBlockParser;
 import org.commonmark.parser.block.AbstractBlockParserFactory;
@@ -24,6 +22,8 @@ import org.commonmark.parser.block.BlockContinue;
 import org.commonmark.parser.block.BlockStart;
 import org.commonmark.parser.block.MatchedBlockParser;
 import org.commonmark.parser.block.ParserState;
+
+import java.util.regex.Matcher;
 
 public class AlertBlockParser extends AbstractBlockParser {
 
@@ -48,12 +48,6 @@ public class AlertBlockParser extends AbstractBlockParser {
   @Override
   public AlertBlock getBlock() {
     return this.block;
-  }
-
-  @Override
-  public void closeBlock() {
-    // TODO Auto-generated method stub
-    super.closeBlock();
   }
 
   @Override

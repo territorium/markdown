@@ -1,5 +1,5 @@
 plugins {
-  id 'com.gradle.plugin-publish' version '0.14.0'
+  id 'com.gradle.plugin-publish' version '0.21.0'
   id 'java-gradle-plugin'
   id 'maven-publish'
 }
@@ -11,7 +11,7 @@ repositories {
 }
 
 
-version = '0.1.17'
+version = '0.1.18'
 group	= 'it.smartio'
 
 
@@ -22,21 +22,12 @@ dependencies {
   // https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop
   implementation group: 'org.apache.xmlgraphics', name: 'fop', version: '2.7'
   // https://mvnrepository.com/artifact/org.commonmark/commonmark
-  implementation group: 'org.commonmark', name: 'commonmark', version: '0.18.1'
+  implementation group: 'org.commonmark', name: 'commonmark', version: '0.18.2'
 }
 
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-
-sourceSets {
-  main {
-    java {
-      exclude '**/*Mojo.java'
-    }
-  }
-}
 
 
 gradlePlugin {
@@ -59,7 +50,7 @@ pluginBundle {
       displayName = 'Markdown documenter'
       description = 'Glade plugin converting markdown into PDF'
       tags = ['markdown', 'pdf', 'documentation']
-      version = '0.1.17'
+      version = '0.1.18'
     }
   }
 }

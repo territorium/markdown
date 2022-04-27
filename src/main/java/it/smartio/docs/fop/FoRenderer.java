@@ -300,16 +300,16 @@ class FoRenderer implements Renderer, NodeVisitor<FoContext> {
   public final void visit(Table node, FoContext data) {
     FoTable table = new FoTable().setTableLayout("fixed");
 
-    if (!node.isVirtual()) {
-      table.setSpace("1em");
-      table.setBorderTop("1px", "solid", "#777777");
-      table.setBorderBottom("1px", "solid", "#777777");
-      table.setBorderBefore("retain").setBorderCollapse("collapse");
-    } else {
+    if (node.isVirtual()) {
       if (node.getBorderColor() != null) {
         table.setBorder(".5px", "solid", node.getBorderColor());
       }
       table.setBackgroundColor(node.getBackgroundColor());
+    } else {
+      table.setSpace("1em");
+      table.setBorderTop("1px", "solid", "#777777");
+      table.setBorderBottom("1px", "solid", "#777777");
+      table.setBorderBefore("retain").setBorderCollapse("collapse");
     }
 
     data.top().addNode(table);
@@ -480,6 +480,10 @@ class FoRenderer implements Renderer, NodeVisitor<FoContext> {
       content.setMarginLeft("-0.75in");
       content.setMarginRight("-0.75in");
       content.setPadding("0.1in", "0.75in");
+    } else if (node.isInline()) {
+      content.setPadding("0.1in");
+      content.setMarginLeft("0");
+      content.setMarginRight("0");
     } else {
       content.setPadding("0.1in");
       content.setMarginLeft("0");

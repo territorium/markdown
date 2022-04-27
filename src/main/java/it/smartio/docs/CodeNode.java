@@ -20,6 +20,8 @@ package it.smartio.docs;
  */
 public interface CodeNode extends Node {
 
+  boolean isInline();
+
   boolean isStyled();
 
   String getFontSize();

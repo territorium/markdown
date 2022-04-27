@@ -36,6 +36,11 @@ public class CodeParserDefault implements CodeParser {
     return this;
   }
 
+  public final CodeParserDefault setInline(boolean inline) {
+    this.builder.setInline(inline);
+    return this;
+  }
+
   /**
    * Add a child {@link TextBuilder}.
    *

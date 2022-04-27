@@ -15,6 +15,8 @@
 
 package it.smartio.docs.codeblock;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,24 +32,15 @@ import it.smartio.docs.builder.TableBuilder.RowBuilder;
  */
 class CodeParserApi implements CodeParser {
 
-  private static String        HEAD_COLOR        = "#aaaaaa";
-  private static String        GET_COLOR         = "#61affe";
-  private static String        POST_COLOR        = "#49cc90";
-  private static String        PUT_COLOR         = "#fca130";
-  private static String        DELETE_COLOR      = "#f13e3e";
+  private static List<String> METHODS   = Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE");
+  private static List<String> METHOD_FG = Arrays.asList("#aaaaaa", "#61affe", "#49cc90", "#fca130", "#f13e3e");
+  private static List<String> METHOD_BG = Arrays.asList("#eeeeee", "#c7e3ff", "#bfedd8", "#fdcf96", "#fbcbcb");
 
-  private static String        HEAD_BACKGROUND   = "#eeeeee";
-  private static String        GET_BACKGROUND    = "#c7e3ff";
-  private static String        POST_BACKGROUND   = "#bfedd8";
-  private static String        PUT_BACKGROUND    = "#fdcf96";
-  private static String        DELETE_BACKGROUND = "#fbcbcb";
 
-  private static final String  PATTERN_TEXT      = "^(\\s*)([\\w-]+):\\s*(.+)?$";
-  private static final String  PATTERN_IMAGE     = "!\\[\\]\\(([^\\)]+)\\)(?:\\{width=(.+)\\})?";
-  private static final Pattern PATTERN           =
-      Pattern.compile(CodeParserApi.PATTERN_TEXT, Pattern.CASE_INSENSITIVE);
-  private static final Pattern PATTERN2          =
-      Pattern.compile(CodeParserApi.PATTERN_IMAGE, Pattern.CASE_INSENSITIVE);
+  private static final String  PATTERN_TEXT  = "^(\\s*)([\\w-]+):\\s*(.+)?$";
+  private static final String  PATTERN_IMAGE = "!\\[\\]\\(([^\\)]+)\\)(?:\\{width=(.+)\\})?";
+  private static final Pattern PATTERN       = Pattern.compile(CodeParserApi.PATTERN_TEXT, Pattern.CASE_INSENSITIVE);
+  private static final Pattern PATTERN2      = Pattern.compile(CodeParserApi.PATTERN_IMAGE, Pattern.CASE_INSENSITIVE);
 
   private final TableBuilder   table;
 
@@ -61,37 +54,27 @@ class CodeParserApi implements CodeParser {
   }
 
   protected final String getColor(String method) {
-    switch (method) {
-      case "GET":
-        return CodeParserApi.GET_COLOR;
-      case "POST":
-        return CodeParserApi.POST_COLOR;
-      case "PUT":
-      case "PATCH":
-        return CodeParserApi.PUT_COLOR;
-      case "DELETE":
-        return CodeParserApi.DELETE_COLOR;
-      case "HEAD":
-      default:
-        return CodeParserApi.HEAD_COLOR;
-    }
+    int index = METHODS.indexOf(method.toUpperCase());
+    return METHOD_FG.get(index < 0 ? 0 : index);
   }
 
   protected final String getBackground(String method) {
-    switch (method) {
-      case "GET":
-        return CodeParserApi.GET_BACKGROUND;
-      case "POST":
-        return CodeParserApi.POST_BACKGROUND;
-      case "PUT":
-      case "PATCH":
-        return CodeParserApi.PUT_BACKGROUND;
-      case "DELETE":
-        return CodeParserApi.DELETE_BACKGROUND;
-      case "HEAD":
-      default:
-        return CodeParserApi.HEAD_BACKGROUND;
+    int index = METHODS.indexOf(method.toUpperCase());
+    return METHOD_BG.get(index < 0 ? 0 : index);
+  }
+
+  protected final String getStatusBackground(String status) {
+    int value = Integer.parseInt(status);
+    if (value < 200) {
+      return "#ffffff";
+    } else if (value < 300) {
+      return "#00c853";
+    } else if (value < 400) {
+      return "#fac853";
+    } else if (value < 500) {
+      return "#fa2d2d";
     }
+    return "#aa2d2d";
   }
 
   /**
@@ -133,6 +116,11 @@ class CodeParserApi implements CodeParser {
             cell.addInline().setPadding("15pt", "5pt").setBackground(getColor(method)).setBold().setRadius("3px")
                 .addContent(method.toUpperCase());
             cell.addInline().setPadding("5pt", "5pt").setBold().addContent(value);
+          } else if ("response".equalsIgnoreCase(name) && value != null) {
+            String background = getStatusBackground(value);
+            RowBuilder row = this.table.addRow();
+            row.addCell(1, 2).getContent().setPadding("5pt", "2pt").addInline().setPadding("5pt", "2pt")
+                .setBackground(background).setRadius("3px").setBold().addContent(name + " " + value);
           } else {
             RowBuilder row = this.table.addRow();
             row.addCell(1, 2).getContent().setPadding("5pt", "2pt").addInline().setPadding("5pt", "2pt")
@@ -170,12 +158,12 @@ class CodeParserApi implements CodeParser {
 
   protected final void processContent(TableBuilder table, String content, String contentType) {
     RowBuilder row = table.addRow();
-    ParagraphBuilder paragraph = row.addCell(1, 2).getContent().setPadding("1pt", "2pt");
+    ParagraphBuilder paragraph = row.addCell(1, 2).getContent().setPadding("0pt", "0pt", "2pt", "0pt");
 
     if ("application/json".equalsIgnoreCase(contentType.trim())) {
-      ((CodeParserDefault) CodeFactory.of("json", paragraph)).setStyled(false).parse(content);
+      ((CodeParserDefault) CodeFactory.of("json", paragraph)).setStyled(false).setInline(true).parse(content);
     } else if ("application/xml".equalsIgnoreCase(contentType.trim())) {
-      ((CodeParserDefault) CodeFactory.of("xml", paragraph)).setStyled(false).parse(content);
+      ((CodeParserDefault) CodeFactory.of("xml", paragraph)).setStyled(false).setInline(true).parse(content);
     } else if (contentType.trim().toLowerCase().startsWith("image/")) {
       Matcher matcher = CodeParserApi.PATTERN2.matcher(content.trim());
       if (matcher.find()) {

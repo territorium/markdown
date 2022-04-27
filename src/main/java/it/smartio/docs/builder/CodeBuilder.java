@@ -23,6 +23,7 @@ import it.smartio.docs.CodeNode;
 public class CodeBuilder extends ContentBuilder implements CodeNode {
 
   private boolean styled;
+  private boolean inline;
   private String  padding;
   private String  background;
   private String  textColor;
@@ -53,6 +54,18 @@ public class CodeBuilder extends ContentBuilder implements CodeNode {
 
   public final void setStyled(boolean styled) {
     this.styled = styled;
+  }
+
+  /**
+   * Return <code>true</code> id the code has no padding and radius
+   */
+  @Override
+  public final boolean isInline() {
+    return this.inline;
+  }
+
+  public final void setInline(boolean inline) {
+    this.inline= inline;
   }
 
   /**
